@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-
 const courseRoutes = require('./routes/courseRoutes');
 const assignmentRoutes = require('./routes/assignmentRoutes');
+
+console.log('Starting server file...');
 
 const app = express();
 const PORT = 3000;
