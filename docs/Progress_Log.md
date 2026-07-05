@@ -12,15 +12,74 @@
 - Selected HTML, CSS, and JavaScript for the frontend.
 - Selected Node.js and Express for the backend.
 - Selected SQLite as the database solution.
+- Created the GitHub repository and initial project folder structure.
 - Created initial project documentation including research notes, project scope, and user stories.
-- Established the project GitHub repository and folder structure.
-
 
 ## Week 2
 
-- Designed relational database schema.
-- Defined relationships between courses and assignments.
-- Created architecture documentation.
-- Designed MVC structure.
-- Created application wireframes.
-- Planned REST API structure.
+- Designed the relational database schema.
+- Defined the relationship between Courses and Assignments.
+- Created database design documentation.
+- Created the software architecture diagram.
+- Planned the MVC project structure.
+- Created wireframes for the Dashboard, Courses, and Assignments pages.
+- Planned REST API endpoints for the backend.
+
+## Week 3
+
+### Completed
+
+- Initialized the Node.js project.
+- Installed Express, SQLite, and CORS.
+- Created the backend folder structure (routes, models, and controllers).
+- Created the Express server.
+- Implemented the initial API routing structure.
+- Created the SQLite database connection.
+- Created the database initialization script.
+- Built the Courses table.
+- Built the Assignments table.
+- Verified the Express server was running locally.
+
+## Week 4
+
+### Completed
+
+- Connected the Express server to the SQLite database.
+- Implemented the initial GET and POST API endpoints.
+- Tested API endpoints locally.
+- Verified successful communication between the server and database.
+- Updated project documentation.
+- Published backend progress to GitHub.
+
+## Week 5
+
+### Completed
+
+- Expanded the backend API by implementing the remaining CRUD operations.
+- Added GET by ID endpoints for Courses and Assignments.
+- Added PUT endpoints for Courses and Assignments.
+- Added DELETE endpoints for Courses and Assignments.
+- Added basic input validation.
+- Added error handling for invalid requests and missing records.
+- Tested CRUD endpoints locally.
+- Published Week 5 backend updates to GitHub.
+
+## Week 6
+
+### Completed
+
+- Began implementing unit/API testing based on professor feedback.
+- Installed Jest and Supertest for backend testing.
+- Added a test script to the Node.js project.
+- Modified the Express application to support automated testing.
+- Created the initial API test suite.
+- Verified the root endpoint using automated tests.
+- Verified the Courses API endpoint using automated tests.
+- Verified the Assignments API endpoint using automated tests.
+- Successfully passed all initial automated tests.
+
+### Next Steps
+
+- Expand automated tests for POST, PUT, and DELETE endpoints.
+- Continue improving backend reliability and error handling.
+- Begin frontend development and integrate it with the backend API.
