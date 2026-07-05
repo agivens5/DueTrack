@@ -1,24 +1,87 @@
 # DueTrack
 
-DueTrack is a student assignment tracking system designed for COSC 495 Independent Study.
+## Overview
 
-The application allows students to manage courses, assignments, due dates, priority levels, and completion status.
+DueTrack is a student assignment tracking system developed as part of my COSC 495 Independent Study at Towson University.
 
-## Tech Stack
+The goal of the application is to help students organize courses and assignments by allowing them to:
 
+- Create courses
+- Add assignments
+- Track due dates
+- Set assignment priorities
+- Mark assignments as completed
+- View assignment information in one location
+
+---
+
+## Technologies Used
+
+### Frontend
 - HTML
 - CSS
 - JavaScript
+
+### Backend
 - Node.js
-- Express
+- Express.js
+
+### Database
 - SQLite
 
-## Core Features
+### Testing
+- Jest
+- Supertest
 
-- Create courses
-- Create assignments
-- Edit assignments
-- Delete assignments
-- Mark assignments complete
-- Sort assignments by due date
-- Filter assignments by course, status, and priority
+---
+
+## Current Features
+
+- RESTful API
+- SQLite database
+- CRUD operations for Courses
+- CRUD operations for Assignments
+- Automated API testing
+
+---
+
+## Project Structure
+
+```
+DueTrack
+│
+├── client
+├── database
+├── docs
+└── server
+    ├── controllers
+    ├── models
+    ├── routes
+    ├── tests
+    └── server.js
+```
+
+---
+
+## Development Timeline
+
+- ✅ Week 1 – Research and planning
+- ✅ Week 2 – Database and architecture design
+- ✅ Week 3 – Backend setup
+- ✅ Week 4 – Database integration and API foundation
+- ✅ Week 5 – Complete CRUD implementation
+- ✅ Week 6 – API testing
+- ⏳ Week 7 – Frontend development
+- ⏳ Week 8 – Backend/frontend integration
+- ⏳ Week 9 – Feature enhancements
+- ⏳ Week 10 – Final testing and presentation
+
+---
+
+## Author
+
+Armani Givens
+
+COSC 495 Independent Study
+
+Towson University
