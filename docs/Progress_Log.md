@@ -83,3 +83,26 @@
 - Expand automated tests for POST, PUT, and DELETE endpoints.
 - Continue improving backend reliability and error handling.
 - Begin frontend development and integrate it with the backend API.
+
+## Week 7
+
+### Completed
+
+- Developed the initial DueTrack frontend using HTML, CSS, and JavaScript.
+- Created Dashboard, Courses, and Assignments pages.
+- Configured Express to serve the frontend application.
+- Connected frontend forms to the backend REST API using fetch requests.
+- Added functionality to create and display courses.
+- Added functionality to create, display, complete, filter, and delete assignments.
+- Added dashboard summaries for courses and assignment status.
+- Expanded automated tests to validate meaningful application data.
+- Added tests for creating, retrieving, updating, and deleting records.
+- Added tests for input validation and missing records.
+- Prepared a working application demonstration for the weekly meeting.
+
+### Next Steps
+
+- Add editing functionality to the frontend.
+- Improve filtering and sorting options.
+- Debug issues discovered during the live demonstration.
+- Continue performance evaluation and documentation.
