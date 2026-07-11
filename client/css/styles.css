@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #20242a;
+}
+
+header {
+    background: #252a34;
+    color: white;
+    padding: 1.25rem 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    width: min(1000px, 90%);
+    margin: 2rem auto;
+}
+
+.hero,
+.content-section,
+.summary-card,
+.list-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.hero,
+.content-section {
+    margin-bottom: 1.5rem;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-card {
+    text-align: center;
+}
+
+.summary-card p {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+form {
+    display: grid;
+    gap: 0.75rem;
+}
+
+input,
+select,
+textarea,
+button {
+    padding: 0.75rem;
+    font: inherit;
+}
+
+input,
+select,
+textarea {
+    border: 1px solid #c9ced6;
+    border-radius: 6px;
+}
+
+textarea {
+    min-height: 90px;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+    background: #3559e0;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.danger-button {
+    background: #c73737;
+}
+
+.list-card {
+    margin-bottom: 1rem;
+}
+
+.button-row,
+.section-heading {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.success {
+    color: #176b3a;
+    font-weight: bold;
+}
+
+.error {
+    color: #b42318;
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+    header,
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

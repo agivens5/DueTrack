@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DueTrack Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>DueTrack</h1>
+
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="courses.html">Courses</a>
+            <a href="assignments.html">Assignments</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Assignment Dashboard</h2>
+            <p>Manage your courses, deadlines, priorities, and progress.</p>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <h3>Total Courses</h3>
+                <p id="course-count">0</p>
+            </article>
+
+            <article class="summary-card">
+                <h3>Total Assignments</h3>
+                <p id="assignment-count">0</p>
+            </article>
+
+            <article class="summary-card">
+                <h3>Completed</h3>
+                <p id="completed-count">0</p>
+            </article>
+
+            <article class="summary-card">
+                <h3>Incomplete</h3>
+                <p id="incomplete-count">0</p>
+            </article>
+        </section>
+
+        <section class="content-section">
+            <h2>Upcoming Assignments</h2>
+            <div id="upcoming-assignments"></div>
+        </section>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

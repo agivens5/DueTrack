@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DueTrack Courses</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>DueTrack</h1>
+
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="courses.html">Courses</a>
+            <a href="assignments.html">Assignments</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="content-section">
+            <h2>Add Course</h2>
+
+            <form id="course-form">
+                <label for="course-name">Course name</label>
+                <input id="course-name" name="course_name" required>
+
+                <label for="instructor">Instructor</label>
+                <input id="instructor" name="instructor">
+
+                <label for="semester">Semester</label>
+                <input id="semester" name="semester">
+
+                <button type="submit">Add Course</button>
+            </form>
+
+            <p id="course-message"></p>
+        </section>
+
+        <section class="content-section">
+            <h2>Your Courses</h2>
+            <div id="course-list"></div>
+        </section>
+    </main>
+
+    <script src="js/courses.js"></script>
+</body>
+</html>

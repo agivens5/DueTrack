@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DueTrack Assignments</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>DueTrack</h1>
+
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="courses.html">Courses</a>
+            <a href="assignments.html">Assignments</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="content-section">
+            <h2>Add Assignment</h2>
+
+            <form id="assignment-form">
+                <label for="assignment-course">Course</label>
+                <select id="assignment-course" required>
+                    <option value="">Select a course</option>
+                </select>
+
+                <label for="assignment-title">Title</label>
+                <input id="assignment-title" required>
+
+                <label for="assignment-description">Description</label>
+                <textarea id="assignment-description"></textarea>
+
+                <label for="assignment-due-date">Due date</label>
+                <input id="assignment-due-date" type="date" required>
+
+                <label for="assignment-priority">Priority</label>
+                <select id="assignment-priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                </select>
+
+                <label for="assignment-status">Status</label>
+                <select id="assignment-status">
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Complete">Complete</option>
+                </select>
+
+                <button type="submit">Add Assignment</button>
+            </form>
+
+            <p id="assignment-message"></p>
+        </section>
+
+        <section class="content-section">
+            <div class="section-heading">
+                <h2>Your Assignments</h2>
+
+                <select id="status-filter">
+                    <option value="All">All statuses</option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Complete">Complete</option>
+                </select>
+            </div>
+
+            <div id="assignment-list"></div>
+        </section>
+    </main>
+
+    <script src="js/assignments.js"></script>
+</body>
+</html>
