@@ -141,4 +141,36 @@ Implemented tests for:
 - Jest
 - Supertest
 
-##Week 8
+## Week 8 – Frontend Integration, Testing, and User Interface Improvements
+
+### Completed This Week
+- Integrated the frontend with the Express.js backend API.
+- Connected the Courses and Assignments pages to the SQLite database using RESTful API endpoints.
+- Implemented full CRUD functionality for courses (Create, Read, Update, Delete).
+- Implemented full CRUD functionality for assignments, including updating assignment details and deleting assignments.
+- Added the ability to mark assignments as complete.
+- Added assignment filtering by completion status.
+- Implemented edit functionality for both courses and assignments.
+- Added confirmation dialogs before deleting records.
+- Improved user feedback by displaying success and error messages after operations.
+- Updated the interface so changes are reflected immediately without requiring a manual page refresh.
+- Improved overall usability by resetting forms after successful submissions and updating button labels during edit operations.
+
+### Testing and Debugging
+- Performed extensive manual testing of all frontend features.
+- Verified successful communication between the frontend and backend.
+- Confirmed Create, Read, Update, and Delete operations function correctly for both courses and assignments.
+- Verified assignment completion and filtering functionality.
+- Fixed issues discovered during frontend integration and confirmed application stability.
+
+### Technologies Used
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- Node.js
+- Express.js
+- SQLite
+- REST API
+
+### Outcome
+The DueTrack application is now fully integrated with the backend and provides a complete end-to-end user experience. All major application features have been implemented, tested, and verified to function correctly. The project is now ready to move into the final documentation, application refinement, and presentation phase.
