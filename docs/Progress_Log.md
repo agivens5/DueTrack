@@ -84,25 +84,61 @@
 - Continue improving backend reliability and error handling.
 - Begin frontend development and integrate it with the backend API.
 
-## Week 7
+## Week 7 – API Testing & Quality Assurance
 
-### Completed
+**Focus:** Backend Testing and Quality Assurance
 
-- Developed the initial DueTrack frontend using HTML, CSS, and JavaScript.
-- Created Dashboard, Courses, and Assignments pages.
-- Configured Express to serve the frontend application.
-- Connected frontend forms to the backend REST API using fetch requests.
-- Added functionality to create and display courses.
-- Added functionality to create, display, complete, filter, and delete assignments.
-- Added dashboard summaries for courses and assignment status.
-- Expanded automated tests to validate meaningful application data.
-- Added tests for creating, retrieving, updating, and deleting records.
-- Added tests for input validation and missing records.
-- Prepared a working application demonstration for the weekly meeting.
+### Goals
+- Implement automated testing for the DueTrack backend.
+- Verify that all Course and Assignment API endpoints function correctly.
+- Improve application reliability by separating the testing environment from the production database.
 
-### Next Steps
+### Completed Tasks
 
-- Add editing functionality to the frontend.
-- Improve filtering and sorting options.
-- Debug issues discovered during the live demonstration.
-- Continue performance evaluation and documentation.
+#### Automated API Testing
+- Installed and configured **Jest** and **Supertest** for automated backend testing.
+- Developed a comprehensive API test suite for the DueTrack application.
+- Verified CRUD functionality for both Courses and Assignments.
+
+#### Course API Tests
+Implemented tests for:
+- Creating a course (POST)
+- Retrieving all courses (GET)
+- Retrieving a course by ID (GET)
+- Updating a course (PUT)
+- Deleting a course (DELETE)
+- Returning a 400 Bad Request when the course name is missing
+- Returning a 404 Not Found when a course does not exist
+
+#### Assignment API Tests
+Implemented tests for:
+- Creating an assignment (POST)
+- Retrieving all assignments (GET)
+- Retrieving an assignment by ID (GET)
+- Updating an assignment (PUT)
+- Deleting an assignment (DELETE)
+- Returning a 400 Bad Request when the assignment title is missing
+- Returning a 400 Bad Request when the due date is missing
+- Returning a 404 Not Found when an assignment does not exist
+
+#### Test Environment Improvements
+- Modified the database configuration to automatically switch between the production database and a dedicated test database using `NODE_ENV`.
+- Created a separate SQLite database (`duetrack.test.db`) for automated testing.
+- Updated the database initialization process to automatically create tables for both production and test environments.
+- Configured the automated test suite to remove the temporary test database after all tests complete, ensuring a clean testing environment.
+
+### Results
+- Successfully created **18 automated API tests**.
+- All tests pass successfully.
+- Verified backend CRUD functionality for Courses and Assignments.
+- Verified API validation and error handling for invalid requests and missing resources.
+- Improved the reliability and maintainability of the DueTrack backend.
+
+### Technologies Used
+- Node.js
+- Express.js
+- SQLite
+- Jest
+- Supertest
+
+##Week 8
