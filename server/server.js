@@ -2,11 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+const initializeDatabase = require('./models/initDb');
 const courseRoutes = require('./routes/courseRoutes');
 const assignmentRoutes = require('./routes/assignmentRoutes');
 
 const app = express();
 const PORT = 3000;
+
+// Create the database tables if they do not exist
+initializeDatabase();
 
 app.use(cors());
 app.use(express.json());
