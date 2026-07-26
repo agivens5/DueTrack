@@ -1,23 +1,75 @@
-const assignmentForm = document.getElementById('assignment-form');
-const assignmentList = document.getElementById('assignment-list');
-const assignmentMessage = document.getElementById('assignment-message');
-const courseSelect = document.getElementById('assignment-course');
-const statusFilter = document.getElementById('status-filter');
+const assignmentForm = document.getElementById(
+    'assignment-form'
+);
+
+const assignmentList = document.getElementById(
+    'assignment-list'
+);
+
+const assignmentMessage = document.getElementById(
+    'assignment-message'
+);
+
+const courseSelect = document.getElementById(
+    'assignment-course'
+);
+
+const statusFilter = document.getElementById(
+    'status-filter'
+);
+
+const assignmentSearch = document.getElementById(
+    'assignment-search'
+);
+
+const assignmentSort = document.getElementById(
+    'assignment-sort'
+);
+
+const clearFiltersButton = document.getElementById(
+    'clear-filters-button'
+);
+
+const cancelEditButton = document.getElementById(
+    'cancel-edit-button'
+);
+
+const assignmentFormHeading = document.getElementById(
+    'assignment-form-heading'
+);
+
+const visibleAssignmentCount = document.getElementById(
+    'visible-assignment-count'
+);
 
 let assignments = [];
+let editingAssignmentId = null;
 
 async function loadCourses() {
-    const response = await fetch('/api/courses');
-    const courses = await response.json();
+    try {
+        const response = await fetch('/api/courses');
 
-    courseSelect.innerHTML = '<option value="">Select a course</option>';
+        if (!response.ok) {
+            throw new Error('Unable to load courses.');
+        }
 
-    courses.forEach(course => {
-        const option = document.createElement('option');
-        option.value = course.course_id;
-        option.textContent = course.course_name;
-        courseSelect.appendChild(option);
-    });
+        const courses = await response.json();
+
+        courseSelect.innerHTML = `
+            <option value="">Select a course</option>
+        `;
+
+        courses.forEach(course => {
+            const option = document.createElement('option');
+
+            option.value = course.course_id;
+            option.textContent = course.course_name;
+
+            courseSelect.appendChild(option);
+        });
+    } catch (error) {
+        showAssignmentMessage(error.message, 'error');
+    }
 }
 
 async function loadAssignments() {
@@ -29,48 +81,239 @@ async function loadAssignments() {
         }
 
         assignments = await response.json();
+
         displayAssignments();
     } catch (error) {
-        assignmentList.innerHTML = `<p class="error">${error.message}</p>`;
+        assignmentList.innerHTML = `
+            <div class="empty-state">
+                <p class="error">
+                    ${escapeHtml(error.message)}
+                </p>
+            </div>
+        `;
     }
 }
 
 function displayAssignments() {
     const selectedStatus = statusFilter.value;
+    const searchText = assignmentSearch.value
+        .trim()
+        .toLowerCase();
 
     const visibleAssignments = assignments
-        .filter(assignment =>
-            selectedStatus === 'All' || assignment.status === selectedStatus
-        )
-        .sort((first, second) =>
-            new Date(first.due_date) - new Date(second.due_date)
-        );
+        .filter(assignment => {
+            const matchesStatus =
+                selectedStatus === 'All' ||
+                (
+                    selectedStatus === 'Overdue' &&
+                    isOverdue(assignment)
+                ) ||
+                assignment.status === selectedStatus;
+
+            const searchableText = [
+                assignment.title,
+                assignment.description,
+                assignment.priority,
+                assignment.status,
+                assignment.due_date
+            ]
+                .filter(Boolean)
+                .join(' ')
+                .toLowerCase();
+
+            const matchesSearch =
+                searchableText.includes(searchText);
+
+            return matchesStatus && matchesSearch;
+        });
+
+    sortAssignments(visibleAssignments);
+
+    updateVisibleAssignmentCount(visibleAssignments.length);
 
     if (visibleAssignments.length === 0) {
-        assignmentList.innerHTML = '<p>No assignments match this filter.</p>';
+        assignmentList.innerHTML = `
+            <div class="empty-state">
+                <span
+                    class="empty-state-icon"
+                    aria-hidden="true"
+                >
+                    🔎
+                </span>
+
+                <h3>No assignments found</h3>
+
+                <p>
+                    Try changing your search, status filter,
+                    or sorting option.
+                </p>
+            </div>
+        `;
+
         return;
     }
 
-    assignmentList.innerHTML = visibleAssignments.map(assignment => `
-        <article class="list-card">
-            <h3>${escapeHtml(assignment.title)}</h3>
-            <p><strong>Description:</strong> ${escapeHtml(assignment.description || 'None')}</p>
-            <p><strong>Due:</strong> ${escapeHtml(assignment.due_date)}</p>
-            <p><strong>Priority:</strong> ${escapeHtml(assignment.priority || 'None')}</p>
-            <p><strong>Status:</strong> ${escapeHtml(assignment.status || 'Not Started')}</p>
+    assignmentList.innerHTML = visibleAssignments
+        .map(createAssignmentCard)
+        .join('');
+}
 
-            <div class="button-row">
-                <button onclick="markComplete(${assignment.assignment_id})">
-                    Mark Complete
+function createAssignmentCard(assignment) {
+    const priority = assignment.priority || 'Medium';
+    const status = assignment.status || 'Not Started';
+    const overdue = isOverdue(assignment);
+
+    return `
+        <article class="
+            list-card
+            assignment-card
+            ${assignment.status === 'Complete'
+                ? 'completed-assignment'
+                : ''}
+            ${overdue ? 'overdue-assignment' : ''}
+        ">
+            <div class="card-title-row">
+                <div>
+                    <div class="badge-row">
+                        <span class="
+                            priority-badge
+                            priority-${getClassName(priority)}
+                        ">
+                            ${escapeHtml(priority)} Priority
+                        </span>
+
+                        <span class="
+                            status-badge
+                            status-${getClassName(status)}
+                        ">
+                            ${escapeHtml(status)}
+                        </span>
+
+                        ${overdue
+                            ? `
+                                <span class="overdue-badge">
+                                    Overdue
+                                </span>
+                            `
+                            : ''}
+                    </div>
+
+                    <h3>${escapeHtml(assignment.title)}</h3>
+                </div>
+
+                <p class="assignment-date">
+                    <span aria-hidden="true">📅</span>
+                    ${formatDate(assignment.due_date)}
+                </p>
+            </div>
+
+            <div class="assignment-details">
+                <p>
+                    <strong>Description</strong>
+                </p>
+
+                <p>
+                    ${escapeHtml(
+                        assignment.description ||
+                        'No description was provided.'
+                    )}
+                </p>
+            </div>
+
+            <div class="button-row assignment-button-row">
+                <button
+                    type="button"
+                    class="edit-button"
+                    onclick="editAssignment(
+                        ${assignment.assignment_id}
+                    )"
+                >
+                    Edit
                 </button>
 
-                <button class="danger-button"
-                    onclick="deleteAssignment(${assignment.assignment_id})">
+                <button
+                    type="button"
+                    class="complete-button"
+                    onclick="markComplete(
+                        ${assignment.assignment_id}
+                    )"
+                    ${assignment.status === 'Complete'
+                        ? 'disabled'
+                        : ''}
+                >
+                    ${assignment.status === 'Complete'
+                        ? 'Completed'
+                        : 'Mark Complete'}
+                </button>
+
+                <button
+                    type="button"
+                    class="danger-button"
+                    onclick="deleteAssignment(
+                        ${assignment.assignment_id}
+                    )"
+                >
                     Delete
                 </button>
             </div>
         </article>
-    `).join('');
+    `;
+}
+
+function sortAssignments(assignmentArray) {
+    const selectedSort = assignmentSort.value;
+
+    const priorityOrder = {
+        High: 3,
+        Medium: 2,
+        Low: 1
+    };
+
+    const statusOrder = {
+        'Not Started': 1,
+        'In Progress': 2,
+        Complete: 3
+    };
+
+    assignmentArray.sort((first, second) => {
+        switch (selectedSort) {
+            case 'due-descending':
+                return (
+                    parseDate(second.due_date) -
+                    parseDate(first.due_date)
+                );
+
+            case 'priority-high':
+                return (
+                    (priorityOrder[second.priority] || 0) -
+                    (priorityOrder[first.priority] || 0)
+                );
+
+            case 'priority-low':
+                return (
+                    (priorityOrder[first.priority] || 0) -
+                    (priorityOrder[second.priority] || 0)
+                );
+
+            case 'status':
+                return (
+                    (statusOrder[first.status] || 0) -
+                    (statusOrder[second.status] || 0)
+                );
+
+            case 'title':
+                return String(first.title || '').localeCompare(
+                    String(second.title || '')
+                );
+
+            case 'due-ascending':
+            default:
+                return (
+                    parseDate(first.due_date) -
+                    parseDate(second.due_date)
+                );
+        }
+    });
 }
 
 assignmentForm.addEventListener('submit', async event => {
@@ -78,16 +321,41 @@ assignmentForm.addEventListener('submit', async event => {
 
     const assignment = {
         course_id: Number(courseSelect.value),
-        title: document.getElementById('assignment-title').value.trim(),
-        description: document.getElementById('assignment-description').value.trim(),
-        due_date: document.getElementById('assignment-due-date').value,
-        priority: document.getElementById('assignment-priority').value,
-        status: document.getElementById('assignment-status').value
+
+        title: document
+            .getElementById('assignment-title')
+            .value
+            .trim(),
+
+        description: document
+            .getElementById('assignment-description')
+            .value
+            .trim(),
+
+        due_date: document
+            .getElementById('assignment-due-date')
+            .value,
+
+        priority: document
+            .getElementById('assignment-priority')
+            .value,
+
+        status: document
+            .getElementById('assignment-status')
+            .value
     };
 
+    const isEditing = editingAssignmentId !== null;
+
+    const url = isEditing
+        ? `/api/assignments/${editingAssignmentId}`
+        : '/api/assignments';
+
+    const method = isEditing ? 'PUT' : 'POST';
+
     try {
-        const response = await fetch('/api/assignments', {
-            method: 'POST',
+        const response = await fetch(url, {
+            method,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -97,19 +365,80 @@ assignmentForm.addEventListener('submit', async event => {
         const result = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.error || 'Unable to add assignment.');
+            throw new Error(
+                result.error ||
+                `Unable to ${
+                    isEditing ? 'update' : 'add'
+                } assignment.`
+            );
         }
 
-        assignmentMessage.textContent = `${result.title} was added successfully.`;
-        assignmentMessage.className = 'success';
+        showAssignmentMessage(
+            isEditing
+                ? `${result.title} was updated successfully.`
+                : `${result.title} was added successfully.`,
+            'success'
+        );
 
-        assignmentForm.reset();
+        resetAssignmentForm();
+
         await loadAssignments();
     } catch (error) {
-        assignmentMessage.textContent = error.message;
-        assignmentMessage.className = 'error';
+        showAssignmentMessage(error.message, 'error');
     }
 });
+
+function editAssignment(assignmentId) {
+    const assignment = assignments.find(
+        item => item.assignment_id === assignmentId
+    );
+
+    if (!assignment) {
+        showAssignmentMessage(
+            'Assignment could not be found.',
+            'error'
+        );
+
+        return;
+    }
+
+    editingAssignmentId = assignmentId;
+
+    courseSelect.value = assignment.course_id ?? '';
+
+    document.getElementById('assignment-title').value =
+        assignment.title || '';
+
+    document.getElementById('assignment-description').value =
+        assignment.description || '';
+
+    document.getElementById('assignment-due-date').value =
+        assignment.due_date || '';
+
+    document.getElementById('assignment-priority').value =
+        assignment.priority || 'Medium';
+
+    document.getElementById('assignment-status').value =
+        assignment.status || 'Not Started';
+
+    assignmentFormHeading.textContent = 'Edit Assignment';
+
+    document.getElementById(
+        'assignment-submit-button'
+    ).textContent = 'Update Assignment';
+
+    cancelEditButton.classList.remove('hidden');
+
+    showAssignmentMessage(
+        'Edit the information, then click Update Assignment.',
+        ''
+    );
+
+    assignmentForm.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}
 
 async function markComplete(assignmentId) {
     const assignment = assignments.find(
@@ -117,33 +446,51 @@ async function markComplete(assignmentId) {
     );
 
     if (!assignment) {
+        showAssignmentMessage(
+            'Assignment could not be found.',
+            'error'
+        );
+
         return;
     }
 
-    const response = await fetch(`/api/assignments/${assignmentId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            ...assignment,
-            status: 'Complete'
-        })
-    });
+    try {
+        const response = await fetch(
+            `/api/assignments/${assignmentId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...assignment,
+                    status: 'Complete'
+                })
+            }
+        );
 
-    const result = await response.json();
+        const result = await response.json();
 
-    if (!response.ok) {
-        assignmentMessage.textContent =
-            result.error || 'Unable to update assignment.';
-        assignmentMessage.className = 'error';
-        return;
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                'Unable to update assignment.'
+            );
+        }
+
+        if (editingAssignmentId === assignmentId) {
+            resetAssignmentForm();
+        }
+
+        showAssignmentMessage(
+            `${result.title} was marked complete.`,
+            'success'
+        );
+
+        await loadAssignments();
+    } catch (error) {
+        showAssignmentMessage(error.message, 'error');
     }
-
-    assignmentMessage.textContent = `${result.title} was marked complete.`;
-    assignmentMessage.className = 'success';
-
-    await loadAssignments();
 }
 
 async function deleteAssignment(assignmentId) {
@@ -151,31 +498,153 @@ async function deleteAssignment(assignmentId) {
         return;
     }
 
-    const response = await fetch(`/api/assignments/${assignmentId}`, {
-        method: 'DELETE'
-    });
+    try {
+        const response = await fetch(
+            `/api/assignments/${assignmentId}`,
+            {
+                method: 'DELETE'
+            }
+        );
 
-    const result = await response.json();
+        const result = await response.json();
 
-    if (!response.ok) {
-        assignmentMessage.textContent =
-            result.error || 'Unable to delete assignment.';
-        assignmentMessage.className = 'error';
-        return;
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                'Unable to delete assignment.'
+            );
+        }
+
+        if (editingAssignmentId === assignmentId) {
+            resetAssignmentForm();
+        }
+
+        showAssignmentMessage(
+            result.message,
+            'success'
+        );
+
+        await loadAssignments();
+    } catch (error) {
+        showAssignmentMessage(error.message, 'error');
+    }
+}
+
+function resetAssignmentForm() {
+    editingAssignmentId = null;
+
+    assignmentForm.reset();
+
+    assignmentFormHeading.textContent = 'Add Assignment';
+
+    document.getElementById(
+        'assignment-submit-button'
+    ).textContent = 'Add Assignment';
+
+    cancelEditButton.classList.add('hidden');
+}
+
+function clearAssignmentControls() {
+    assignmentSearch.value = '';
+    statusFilter.value = 'All';
+    assignmentSort.value = 'due-ascending';
+
+    displayAssignments();
+}
+
+function updateVisibleAssignmentCount(count) {
+    visibleAssignmentCount.textContent =
+        `${count} ${count === 1 ? 'assignment' : 'assignments'}`;
+}
+
+function showAssignmentMessage(message, className) {
+    assignmentMessage.textContent = message;
+    assignmentMessage.className = `form-message ${className}`.trim();
+}
+
+function isOverdue(assignment) {
+    if (
+        assignment.status === 'Complete' ||
+        !assignment.due_date
+    ) {
+        return false;
     }
 
-    assignmentMessage.textContent = result.message;
-    assignmentMessage.className = 'success';
+    return parseDate(assignment.due_date) < startOfToday();
+}
 
-    await loadAssignments();
+function parseDate(dateValue) {
+    if (!dateValue) {
+        return new Date(8640000000000000);
+    }
+
+    return new Date(`${dateValue}T00:00:00`);
+}
+
+function startOfToday() {
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    return today;
+}
+
+function formatDate(dateValue) {
+    if (!dateValue) {
+        return 'No due date';
+    }
+
+    return parseDate(dateValue).toLocaleDateString(
+        'en-US',
+        {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        }
+    );
+}
+
+function getClassName(value) {
+    return String(value)
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-');
 }
 
 function escapeHtml(value) {
     const element = document.createElement('div');
+
     element.textContent = value ?? '';
+
     return element.innerHTML;
 }
 
-statusFilter.addEventListener('change', displayAssignments);
+statusFilter.addEventListener(
+    'change',
+    displayAssignments
+);
 
-Promise.all([loadCourses(), loadAssignments()]);
+assignmentSearch.addEventListener(
+    'input',
+    displayAssignments
+);
+
+assignmentSort.addEventListener(
+    'change',
+    displayAssignments
+);
+
+clearFiltersButton.addEventListener(
+    'click',
+    clearAssignmentControls
+);
+
+cancelEditButton.addEventListener(
+    'click',
+    resetAssignmentForm
+);
+
+Promise.all([
+    loadCourses(),
+    loadAssignments()
+]);

@@ -6,6 +6,7 @@
     <title>DueTrack Assignments</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <header>
         <h1>DueTrack</h1>
@@ -13,13 +14,14 @@
         <nav>
             <a href="index.html">Dashboard</a>
             <a href="courses.html">Courses</a>
-            <a href="assignments.html">Assignments</a>
+            <a href="assignments.html" class="active">Assignments</a>
         </nav>
     </header>
 
     <main>
         <section class="content-section">
-            <h2>Add Assignment</h2>
+            <p class="eyebrow">Assignment Management</p>
+            <h2 id="assignment-form-heading">Add Assignment</h2>
 
             <form id="assignment-form">
                 <label for="assignment-course">Course</label>
@@ -28,13 +30,24 @@
                 </select>
 
                 <label for="assignment-title">Title</label>
-                <input id="assignment-title" required>
+                <input
+                    id="assignment-title"
+                    placeholder="Example: Week 9 Progress Report"
+                    required
+                >
 
                 <label for="assignment-description">Description</label>
-                <textarea id="assignment-description"></textarea>
+                <textarea
+                    id="assignment-description"
+                    placeholder="Enter assignment details"
+                ></textarea>
 
                 <label for="assignment-due-date">Due date</label>
-                <input id="assignment-due-date" type="date" required>
+                <input
+                    id="assignment-due-date"
+                    type="date"
+                    required
+                >
 
                 <label for="assignment-priority">Priority</label>
                 <select id="assignment-priority">
@@ -50,22 +63,88 @@
                     <option value="Complete">Complete</option>
                 </select>
 
-                <button type="submit">Add Assignment</button>
+                <div class="form-button-row">
+                    <button type="submit" id="assignment-submit-button">
+                        Add Assignment
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancel-edit-button"
+                        class="secondary-button hidden"
+                    >
+                        Cancel Edit
+                    </button>
+                </div>
             </form>
 
-            <p id="assignment-message"></p>
+            <p id="assignment-message" class="form-message"></p>
         </section>
 
         <section class="content-section">
-            <div class="section-heading">
-                <h2>Your Assignments</h2>
+            <div class="section-heading assignment-section-heading">
+                <div>
+                    <p class="eyebrow">Assignment List</p>
+                    <h2>Your Assignments</h2>
+                </div>
 
-                <select id="status-filter">
-                    <option value="All">All statuses</option>
-                    <option value="Not Started">Not Started</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Complete">Complete</option>
-                </select>
+                <span id="visible-assignment-count" class="result-count">
+                    0 assignments
+                </span>
+            </div>
+
+            <div class="assignment-controls">
+                <div class="control-group search-group">
+                    <label for="assignment-search">Search</label>
+                    <input
+                        id="assignment-search"
+                        type="search"
+                        placeholder="Search titles or descriptions"
+                    >
+                </div>
+
+                <div class="control-group">
+                    <label for="status-filter">Status</label>
+                    <select id="status-filter">
+                        <option value="All">All statuses</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Complete">Complete</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="assignment-sort">Sort by</label>
+                    <select id="assignment-sort">
+                        <option value="due-ascending">
+                            Due date: earliest first
+                        </option>
+                        <option value="due-descending">
+                            Due date: latest first
+                        </option>
+                        <option value="priority-high">
+                            Priority: high to low
+                        </option>
+                        <option value="priority-low">
+                            Priority: low to high
+                        </option>
+                        <option value="status">
+                            Status
+                        </option>
+                        <option value="title">
+                            Title
+                        </option>
+                    </select>
+                </div>
+
+                <button
+                    type="button"
+                    id="clear-filters-button"
+                    class="secondary-button clear-filter-button"
+                >
+                    Clear
+                </button>
             </div>
 
             <div id="assignment-list"></div>

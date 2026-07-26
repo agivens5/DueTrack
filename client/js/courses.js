@@ -2,6 +2,8 @@ const courseForm = document.getElementById('course-form');
 const courseList = document.getElementById('course-list');
 const courseMessage = document.getElementById('course-message');
 
+let editingCourseId = null;
+
 async function loadCourses() {
     try {
         const response = await fetch('/api/courses');
@@ -20,15 +22,42 @@ async function loadCourses() {
         courseList.innerHTML = courses.map(course => `
             <article class="list-card">
                 <h3>${escapeHtml(course.course_name)}</h3>
-                <p><strong>Instructor:</strong> ${escapeHtml(course.instructor || 'Not entered')}</p>
-                <p><strong>Semester:</strong> ${escapeHtml(course.semester || 'Not entered')}</p>
-                <button class="danger-button" onclick="deleteCourse(${course.course_id})">
-                    Delete
-                </button>
+
+                <p>
+                    <strong>Instructor:</strong>
+                    ${escapeHtml(course.instructor || 'Not entered')}
+                </p>
+
+                <p>
+                    <strong>Semester:</strong>
+                    ${escapeHtml(course.semester || 'Not entered')}
+                </p>
+
+                <div class="card-actions">
+                    <button
+                        type="button"
+                        onclick="editCourse(
+                            ${course.course_id},
+                            '${escapeForAttribute(course.course_name)}',
+                            '${escapeForAttribute(course.instructor || '')}',
+                            '${escapeForAttribute(course.semester || '')}'
+                        )"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        type="button"
+                        class="danger-button"
+                        onclick="deleteCourse(${course.course_id})"
+                    >
+                        Delete
+                    </button>
+                </div>
             </article>
         `).join('');
     } catch (error) {
-        courseList.innerHTML = `<p class="error">${error.message}</p>`;
+        courseList.innerHTML = `<p class="error">${escapeHtml(error.message)}</p>`;
     }
 }
 
@@ -41,9 +70,17 @@ courseForm.addEventListener('submit', async event => {
         semester: document.getElementById('semester').value.trim()
     };
 
+    const isEditing = editingCourseId !== null;
+
+    const url = isEditing
+        ? `/api/courses/${editingCourseId}`
+        : '/api/courses';
+
+    const method = isEditing ? 'PUT' : 'POST';
+
     try {
-        const response = await fetch('/api/courses', {
-            method: 'POST',
+        const response = await fetch(url, {
+            method,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -53,19 +90,49 @@ courseForm.addEventListener('submit', async event => {
         const result = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.error || 'Unable to add course.');
+            throw new Error(
+                result.error ||
+                `Unable to ${isEditing ? 'update' : 'add'} course.`
+            );
         }
 
-        courseMessage.textContent = `${result.course_name} was added successfully.`;
+        courseMessage.textContent = isEditing
+            ? `${result.course_name} was updated successfully.`
+            : `${result.course_name} was added successfully.`;
+
         courseMessage.className = 'success';
 
-        courseForm.reset();
+        resetCourseForm();
         await loadCourses();
     } catch (error) {
         courseMessage.textContent = error.message;
         courseMessage.className = 'error';
     }
 });
+
+function editCourse(courseId, courseName, instructor, semester) {
+    editingCourseId = courseId;
+
+    document.getElementById('course-name').value = courseName;
+    document.getElementById('instructor').value = instructor;
+    document.getElementById('semester').value = semester;
+
+    const submitButton = courseForm.querySelector(
+        'button[type="submit"]'
+    );
+
+    submitButton.textContent = 'Update Course';
+
+    courseMessage.textContent =
+        'Edit the course information, then click Update Course.';
+
+    courseMessage.className = '';
+
+    courseForm.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}
 
 async function deleteCourse(courseId) {
     const confirmed = window.confirm(
@@ -87,6 +154,10 @@ async function deleteCourse(courseId) {
             throw new Error(result.error || 'Unable to delete course.');
         }
 
+        if (editingCourseId === courseId) {
+            resetCourseForm();
+        }
+
         courseMessage.textContent = result.message;
         courseMessage.className = 'success';
 
@@ -97,10 +168,28 @@ async function deleteCourse(courseId) {
     }
 }
 
+function resetCourseForm() {
+    editingCourseId = null;
+    courseForm.reset();
+
+    const submitButton = courseForm.querySelector(
+        'button[type="submit"]'
+    );
+
+    submitButton.textContent = 'Add Course';
+}
+
 function escapeHtml(value) {
     const element = document.createElement('div');
     element.textContent = value ?? '';
     return element.innerHTML;
+}
+
+function escapeForAttribute(value) {
+    return String(value ?? '')
+        .replaceAll('\\', '\\\\')
+        .replaceAll("'", "\\'")
+        .replaceAll('\n', ' ');
 }
 
 loadCourses();
