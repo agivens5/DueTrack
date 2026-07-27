@@ -173,4 +173,65 @@ Implemented tests for:
 - REST API
 
 ### Outcome
-The DueTrack application is now fully integrated with the backend and provides a complete end-to-end user experience. All major application features have been implemented, tested, and verified to function correctly. The project is now ready to move into the final documentation, application refinement, and presentation phase.
+The DueTrack application now provides a complete end-to-end assignment management system with full CRUD functionality for Courses and Assignments. The frontend and backend are fully integrated, and all core application features have been implemented and tested successfully. The next phase of development will focus on adding secure user authentication, session management, and user-specific data access.
+
+## Week 9 – User Authentication & Application Security
+
+### Focus
+Implement secure user authentication and session management to ensure that each user can securely access only their own DueTrack data.
+
+### Goals
+- Implement user registration and login.
+- Secure user passwords using bcrypt hashing.
+- Add session-based authentication.
+- Protect backend API routes.
+- Restrict users to viewing and modifying only their own courses and assignments.
+- Integrate authentication into the frontend.
+
+### Completed Tasks
+
+#### User Authentication
+- Created a Users database table to store account information.
+- Implemented user registration functionality.
+- Implemented secure user login functionality.
+- Hashed user passwords using bcrypt before storing them in the database.
+- Implemented Express session management for authenticated users.
+- Added logout functionality that properly destroys user sessions.
+
+#### Backend Security
+- Created authentication middleware to protect API endpoints.
+- Updated Courses API routes to require authentication.
+- Updated Assignments API routes to require authentication.
+- Restricted database queries so users can only access their own courses and assignments.
+- Added session validation for protected requests.
+
+#### Frontend Integration
+- Created dedicated Login and Registration pages.
+- Developed reusable frontend authentication utilities.
+- Protected the Dashboard, Courses, and Assignments pages from unauthorized access.
+- Added automatic redirection to the login page when a user is not authenticated.
+- Displayed the logged-in user's name throughout the application.
+- Integrated logout functionality into the navigation bar.
+
+#### Testing and Verification
+- Verified user registration.
+- Verified user login and logout.
+- Verified session persistence during authenticated use.
+- Verified protected routes reject unauthorized users.
+- Verified each user can only view and manage their own data.
+- Tested all CRUD functionality after authentication was integrated.
+- Successfully committed and pushed all authentication updates to GitHub.
+
+### Technologies Used
+- Node.js
+- Express.js
+- SQLite
+- Express Session
+- bcrypt
+- HTML5
+- CSS3
+- JavaScript (ES6)
+
+### Outcome
+
+DueTrack now provides secure user authentication and session management while maintaining all existing assignment management functionality. Users can create accounts, securely log in, manage only their own courses and assignments, and safely log out of the application. The project is now functionally complete and ready for final documentation, deployment, and presentation during Week 10.
