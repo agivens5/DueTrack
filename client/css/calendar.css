@@ -1,0 +1,313 @@
+.view-toggle {
+    display: flex;
+    width: fit-content;
+    gap: 0.5rem;
+    margin: 1.25rem 0;
+    padding: 0.35rem;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: var(--surface-secondary);
+}
+
+.view-toggle-button {
+    width: auto;
+    min-width: 145px;
+    padding: 0.7rem 1rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted-text);
+}
+
+.view-toggle-button:hover:not(:disabled) {
+    background: var(--neutral-background);
+    color: var(--text);
+}
+
+.view-toggle-button.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.calendar-instructions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 1rem 0 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: var(--surface-secondary);
+}
+
+.calendar-instructions h3 {
+    margin: 0 0 0.45rem;
+}
+
+.calendar-instructions p:last-child {
+    margin: 0;
+    color: var(--muted-text);
+}
+
+.calendar-legend {
+    display: flex;
+    max-width: 420px;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    justify-content: flex-end;
+}
+
+.calendar-legend-item {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    color: var(--muted-text);
+    font-size: 0.82rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.calendar-legend-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+}
+
+.calendar-complete-dot {
+    background: #16803c;
+}
+
+.calendar-progress-dot {
+    background: #3559e0;
+}
+
+.calendar-not-started-dot {
+    background: #667085;
+}
+
+.calendar-overdue-dot {
+    background: #c73737;
+}
+
+#assignment-calendar {
+    padding: 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.fc {
+    color: var(--text);
+}
+
+.fc .fc-toolbar {
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.fc .fc-toolbar-title {
+    color: var(--text);
+    font-size: clamp(1.25rem, 4vw, 1.8rem);
+}
+
+.fc .fc-button {
+    border: none;
+    border-radius: 7px;
+    background: var(--primary);
+    box-shadow: none;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.fc .fc-button:hover,
+.fc .fc-button:focus {
+    border: none;
+    background: var(--primary-dark);
+    box-shadow: none;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    border: none;
+    background: var(--primary-dark);
+    box-shadow: none;
+}
+
+.fc .fc-button:disabled {
+    border: none;
+    background: var(--neutral-background);
+    color: var(--muted-text);
+    opacity: 0.75;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+    border-color: var(--card-border);
+}
+
+.fc .fc-col-header-cell {
+    background: var(--surface-secondary);
+}
+
+.fc .fc-col-header-cell-cushion {
+    padding: 0.7rem 0.3rem;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.fc .fc-daygrid-day {
+    background: var(--surface);
+    transition: background-color 0.2s ease;
+}
+
+.fc .fc-daygrid-day:hover {
+    background: var(--surface-secondary);
+}
+
+.fc .fc-day-other {
+    background: var(--surface-secondary);
+}
+
+.fc .fc-day-other .fc-daygrid-day-number {
+    color: var(--muted-text);
+    opacity: 0.7;
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 0.5rem;
+    color: var(--text);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.fc .fc-day-today {
+    background: rgba(53, 89, 224, 0.1) !important;
+}
+
+[data-theme="dark"] .fc .fc-day-today {
+    background: rgba(129, 152, 255, 0.14) !important;
+}
+
+.fc .fc-daygrid-event {
+    margin: 2px 4px;
+    padding: 0.2rem 0.35rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: bold;
+}
+
+.fc .fc-daygrid-event:hover {
+    filter: brightness(1.08);
+}
+
+.fc .fc-event-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fc .fc-more-link {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.fc .fc-daygrid-more-link {
+    margin-left: 4px;
+}
+
+.fc .fc-popover {
+    border-color: var(--card-border);
+    background: var(--surface);
+    box-shadow: var(--hover-shadow);
+}
+
+.fc .fc-popover-header {
+    background: var(--surface-secondary);
+    color: var(--text);
+}
+
+.fc .fc-popover-body {
+    background: var(--surface);
+}
+
+@media (max-width: 700px) {
+    .view-toggle {
+        width: 100%;
+    }
+
+    .view-toggle-button {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .calendar-instructions {
+        flex-direction: column;
+    }
+
+    .calendar-legend {
+        max-width: none;
+        justify-content: flex-start;
+    }
+
+    #assignment-calendar {
+        padding: 0.6rem;
+    }
+
+    .fc .fc-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .fc .fc-toolbar-chunk {
+        display: flex;
+        justify-content: center;
+    }
+
+    .fc .fc-toolbar-title {
+        text-align: center;
+    }
+
+    .fc .fc-daygrid-day-number {
+        padding: 0.35rem;
+        font-size: 0.8rem;
+    }
+
+    .fc .fc-col-header-cell-cushion {
+        padding: 0.5rem 0.1rem;
+        font-size: 0.75rem;
+    }
+
+    .fc .fc-daygrid-event {
+        margin: 1px 2px;
+        padding: 0.1rem 0.2rem;
+        font-size: 0.68rem;
+    }
+}
+
+@media (max-width: 430px) {
+    .view-toggle {
+        flex-direction: column;
+    }
+
+    .view-toggle-button {
+        width: 100%;
+    }
+
+    .calendar-legend {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fc .fc-button {
+        padding: 0.45rem 0.65rem;
+        font-size: 0.8rem;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.2rem;
+    }
+}

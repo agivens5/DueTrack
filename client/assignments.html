@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>DueTrack Assignments</title>
+
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/calendar.css">
 </head>
 
 <body>
@@ -12,69 +19,125 @@
         <h1>DueTrack</h1>
 
         <nav>
-    <a href="index.html">Dashboard</a>
-    <a href="courses.html">Courses</a>
-    <a href="assignments.html" class="active">Assignments</a>
+            <a href="index.html">Dashboard</a>
+            <a href="courses.html">Courses</a>
 
-    <button
-        id="theme-toggle"
-        class="theme-toggle"
-        type="button"
-        aria-label="Switch to dark mode"
-        title="Switch theme"
-    >
-        🌙 Dark
-    </button>
-</nav>
+            <a
+                href="assignments.html"
+                class="active"
+            >
+                Assignments
+            </a>
+
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch to dark mode"
+                title="Switch theme"
+            >
+                🌙 Dark
+            </button>
+        </nav>
     </header>
 
     <main>
         <section class="content-section">
-            <p class="eyebrow">Assignment Management</p>
-            <h2 id="assignment-form-heading">Add Assignment</h2>
+            <p class="eyebrow">
+                Assignment Management
+            </p>
+
+            <h2 id="assignment-form-heading">
+                Add Assignment
+            </h2>
 
             <form id="assignment-form">
-                <label for="assignment-course">Course</label>
-                <select id="assignment-course" required>
-                    <option value="">Select a course</option>
+                <label for="assignment-course">
+                    Course
+                </label>
+
+                <select
+                    id="assignment-course"
+                    required
+                >
+                    <option value="">
+                        Select a course
+                    </option>
                 </select>
 
-                <label for="assignment-title">Title</label>
+                <label for="assignment-title">
+                    Title
+                </label>
+
                 <input
                     id="assignment-title"
                     placeholder="Example: Week 9 Progress Report"
                     required
                 >
 
-                <label for="assignment-description">Description</label>
+                <label for="assignment-description">
+                    Description
+                </label>
+
                 <textarea
                     id="assignment-description"
                     placeholder="Enter assignment details"
                 ></textarea>
 
-                <label for="assignment-due-date">Due date</label>
+                <label for="assignment-due-date">
+                    Due date
+                </label>
+
                 <input
                     id="assignment-due-date"
                     type="date"
                     required
                 >
 
-                <label for="assignment-priority">Priority</label>
+                <label for="assignment-priority">
+                    Priority
+                </label>
+
                 <select id="assignment-priority">
-                    <option value="Low">Low</option>
-                    <option value="Medium" selected>Medium</option>
-                    <option value="High">High</option>
+                    <option value="Low">
+                        Low
+                    </option>
+
+                    <option
+                        value="Medium"
+                        selected
+                    >
+                        Medium
+                    </option>
+
+                    <option value="High">
+                        High
+                    </option>
                 </select>
 
-                <label for="assignment-status">Status</label>
+                <label for="assignment-status">
+                    Status
+                </label>
+
                 <select id="assignment-status">
-                    <option value="Not Started">Not Started</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Complete">Complete</option>
+                    <option value="Not Started">
+                        Not Started
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Complete">
+                        Complete
+                    </option>
                 </select>
 
                 <div class="form-button-row">
-                    <button type="submit" id="assignment-submit-button">
+                    <button
+                        type="submit"
+                        id="assignment-submit-button"
+                    >
                         Add Assignment
                     </button>
 
@@ -88,78 +151,212 @@
                 </div>
             </form>
 
-            <p id="assignment-message" class="form-message"></p>
+            <p
+                id="assignment-message"
+                class="form-message"
+            ></p>
         </section>
 
         <section class="content-section">
             <div class="section-heading assignment-section-heading">
                 <div>
-                    <p class="eyebrow">Assignment List</p>
+                    <p class="eyebrow">
+                        Assignment Overview
+                    </p>
+
                     <h2>Your Assignments</h2>
                 </div>
 
-                <span id="visible-assignment-count" class="result-count">
+                <span
+                    id="visible-assignment-count"
+                    class="result-count"
+                >
                     0 assignments
                 </span>
             </div>
 
-            <div class="assignment-controls">
-                <div class="control-group search-group">
-                    <label for="assignment-search">Search</label>
-                    <input
-                        id="assignment-search"
-                        type="search"
-                        placeholder="Search titles or descriptions"
-                    >
-                </div>
-
-                <div class="control-group">
-                    <label for="status-filter">Status</label>
-                    <select id="status-filter">
-                        <option value="All">All statuses</option>
-                        <option value="Not Started">Not Started</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Complete">Complete</option>
-                        <option value="Overdue">Overdue</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="assignment-sort">Sort by</label>
-                    <select id="assignment-sort">
-                        <option value="due-ascending">
-                            Due date: earliest first
-                        </option>
-                        <option value="due-descending">
-                            Due date: latest first
-                        </option>
-                        <option value="priority-high">
-                            Priority: high to low
-                        </option>
-                        <option value="priority-low">
-                            Priority: low to high
-                        </option>
-                        <option value="status">
-                            Status
-                        </option>
-                        <option value="title">
-                            Title
-                        </option>
-                    </select>
-                </div>
+            <div
+                class="view-toggle"
+                aria-label="Assignment display options"
+            >
+                <button
+                    type="button"
+                    id="list-view-button"
+                    class="view-toggle-button active"
+                    aria-pressed="true"
+                >
+                    <span aria-hidden="true">☰</span>
+                    List View
+                </button>
 
                 <button
                     type="button"
-                    id="clear-filters-button"
-                    class="secondary-button clear-filter-button"
+                    id="calendar-view-button"
+                    class="view-toggle-button"
+                    aria-pressed="false"
                 >
-                    Clear
+                    <span aria-hidden="true">📅</span>
+                    Calendar View
                 </button>
             </div>
 
-            <div id="assignment-list"></div>
+            <div id="assignment-list-view">
+                <div class="assignment-controls">
+                    <div class="control-group search-group">
+                        <label for="assignment-search">
+                            Search
+                        </label>
+
+                        <input
+                            id="assignment-search"
+                            type="search"
+                            placeholder="Search titles or descriptions"
+                        >
+                    </div>
+
+                    <div class="control-group">
+                        <label for="status-filter">
+                            Status
+                        </label>
+
+                        <select id="status-filter">
+                            <option value="All">
+                                All statuses
+                            </option>
+
+                            <option value="Not Started">
+                                Not Started
+                            </option>
+
+                            <option value="In Progress">
+                                In Progress
+                            </option>
+
+                            <option value="Complete">
+                                Complete
+                            </option>
+
+                            <option value="Overdue">
+                                Overdue
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="assignment-sort">
+                            Sort by
+                        </label>
+
+                        <select id="assignment-sort">
+                            <option value="due-ascending">
+                                Due date: earliest first
+                            </option>
+
+                            <option value="due-descending">
+                                Due date: latest first
+                            </option>
+
+                            <option value="priority-high">
+                                Priority: high to low
+                            </option>
+
+                            <option value="priority-low">
+                                Priority: low to high
+                            </option>
+
+                            <option value="status">
+                                Status
+                            </option>
+
+                            <option value="title">
+                                Title
+                            </option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="clear-filters-button"
+                        class="secondary-button clear-filter-button"
+                    >
+                        Clear
+                    </button>
+                </div>
+
+                <div id="assignment-list"></div>
+            </div>
+
+            <div
+                id="assignment-calendar-view"
+                class="hidden"
+            >
+                <div class="calendar-instructions">
+                    <div>
+                        <p class="eyebrow">
+                            Monthly Schedule
+                        </p>
+
+                        <h3>Assignment Calendar</h3>
+
+                        <p>
+                            Click an assignment to edit it, or click
+                            an empty date to begin adding a new
+                            assignment for that day.
+                        </p>
+                    </div>
+
+                    <div class="calendar-legend">
+                        <span class="calendar-legend-item">
+                            <span
+                                class="calendar-legend-dot calendar-complete-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Complete
+                        </span>
+
+                        <span class="calendar-legend-item">
+                            <span
+                                class="calendar-legend-dot calendar-progress-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            In Progress
+                        </span>
+
+                        <span class="calendar-legend-item">
+                            <span
+                                class="calendar-legend-dot calendar-not-started-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Not Started
+                        </span>
+
+                        <span class="calendar-legend-item">
+                            <span
+                                class="calendar-legend-dot calendar-overdue-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Overdue
+                        </span>
+                    </div>
+                </div>
+
+                <div id="assignment-calendar"></div>
+
+                <div
+                    id="calendar-error"
+                    class="hidden"
+                ></div>
+            </div>
         </section>
     </main>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"
+    ></script>
 
     <script src="js/theme.js"></script>
     <script src="js/assignments.js"></script>
