@@ -24,8 +24,11 @@
     --input-background: #ffffff;
     --completed-card-background: #fbfffc;
 
-    --shadow: 0 4px 14px rgba(16, 24, 40, 0.08);
-    --hover-shadow: 0 10px 24px rgba(16, 24, 40, 0.12);
+    --shadow:
+        0 4px 14px rgba(16, 24, 40, 0.08);
+
+    --hover-shadow:
+        0 10px 24px rgba(16, 24, 40, 0.12);
 }
 
 [data-theme="dark"] {
@@ -54,8 +57,11 @@
     --input-background: #252a34;
     --completed-card-background: #182c22;
 
-    --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-    --hover-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
+    --shadow:
+        0 4px 14px rgba(0, 0, 0, 0.3);
+
+    --hover-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.42);
 }
 
 * {
@@ -78,6 +84,9 @@ header,
 .list-card,
 .assignment-details,
 .assignment-controls,
+.chart-summary,
+.progress-highlight,
+.chart-stat-item,
 input,
 select,
 textarea,
@@ -100,7 +109,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.14);
 }
 
 header h1 {
@@ -140,7 +150,8 @@ nav a.active {
     width: auto;
     min-width: 105px;
     padding: 0.65rem 0.85rem;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border:
+        1px solid rgba(255, 255, 255, 0.35);
     background: transparent;
     color: white;
 }
@@ -272,6 +283,99 @@ h2 {
     border-color: #c73737;
 }
 
+.chart-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(280px, 1.25fr)
+        minmax(250px, 0.75fr);
+    gap: 2rem;
+    align-items: center;
+    margin-top: 1.25rem;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 340px;
+}
+
+.chart-summary {
+    display: grid;
+    gap: 1rem;
+}
+
+.progress-highlight {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--card-border);
+    text-align: center;
+}
+
+.progress-label {
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 0.82rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.progress-percentage {
+    margin: 0.5rem 0;
+    color: var(--primary);
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    font-weight: bold;
+    line-height: 1;
+}
+
+.progress-description {
+    margin: 0;
+    color: var(--muted-text);
+}
+
+.chart-stat-list {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.chart-stat-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.7rem;
+    align-items: center;
+    padding: 0.9rem 1rem;
+    border-radius: 9px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--card-border);
+}
+
+.chart-stat-item strong {
+    font-size: 1.1rem;
+}
+
+.chart-stat-dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+}
+
+.complete-dot {
+    background: #16803c;
+}
+
+.progress-dot {
+    background: #3559e0;
+}
+
+.not-started-dot {
+    background: #98a2b3;
+}
+
+.chart-empty-state {
+    width: 100%;
+}
+
 form {
     display: grid;
     gap: 0.75rem;
@@ -314,7 +418,8 @@ input:focus,
 select:focus,
 textarea:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(53, 89, 224, 0.16);
+    box-shadow:
+        0 0 0 3px rgba(53, 89, 224, 0.16);
 }
 
 textarea {
@@ -662,6 +767,21 @@ button:disabled {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .chart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        height: 320px;
+    }
+
+    .chart-summary {
+        grid-template-columns:
+            minmax(220px, 0.8fr)
+            minmax(250px, 1.2fr);
+        align-items: stretch;
+    }
+
     .clear-filter-button {
         width: 100%;
     }
@@ -701,6 +821,14 @@ button:disabled {
         flex-direction: column;
     }
 
+    .chart-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        height: 290px;
+    }
+
     .assignment-controls {
         grid-template-columns: 1fr;
     }
@@ -731,5 +859,9 @@ button:disabled {
     nav a,
     .theme-toggle {
         flex-basis: 100%;
+    }
+
+    .chart-container {
+        height: 260px;
     }
 }

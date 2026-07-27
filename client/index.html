@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>DueTrack Dashboard</title>
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -12,61 +18,131 @@
         <h1>DueTrack</h1>
 
         <nav>
-    <a href="index.html" class="active">Dashboard</a>
-    <a href="courses.html">Courses</a>
-    <a href="assignments.html">Assignments</a>
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="courses.html">Courses</a>
+            <a href="assignments.html">Assignments</a>
 
-    <button
-        id="theme-toggle"
-        class="theme-toggle"
-        type="button"
-        aria-label="Switch to dark mode"
-        title="Switch theme"
-    >
-        🌙 Dark
-    </button>
-</nav>
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch to dark mode"
+                title="Switch theme"
+            >
+                🌙 Dark
+            </button>
+        </nav>
     </header>
 
     <main>
         <section class="hero">
             <p class="eyebrow">DueTrack Overview</p>
+
             <h2>Assignment Dashboard</h2>
+
             <p>
-                Manage your courses, deadlines, priorities, and progress.
+                Manage your courses, deadlines, priorities, and
+                progress.
             </p>
         </section>
 
         <section class="summary-grid">
             <article class="summary-card courses-summary">
-                <span class="summary-icon" aria-hidden="true">📚</span>
+                <span
+                    class="summary-icon"
+                    aria-hidden="true"
+                >
+                    📚
+                </span>
+
                 <h3>Total Courses</h3>
+
                 <p id="course-count">0</p>
             </article>
 
             <article class="summary-card assignments-summary">
-                <span class="summary-icon" aria-hidden="true">📝</span>
+                <span
+                    class="summary-icon"
+                    aria-hidden="true"
+                >
+                    📝
+                </span>
+
                 <h3>Total Assignments</h3>
+
                 <p id="assignment-count">0</p>
             </article>
 
             <article class="summary-card completed-summary">
-                <span class="summary-icon" aria-hidden="true">✅</span>
+                <span
+                    class="summary-icon"
+                    aria-hidden="true"
+                >
+                    ✅
+                </span>
+
                 <h3>Completed</h3>
+
                 <p id="completed-count">0</p>
             </article>
 
             <article class="summary-card incomplete-summary">
-                <span class="summary-icon" aria-hidden="true">⏳</span>
+                <span
+                    class="summary-icon"
+                    aria-hidden="true"
+                >
+                    ⏳
+                </span>
+
                 <h3>Incomplete</h3>
+
                 <p id="incomplete-count">0</p>
             </article>
 
             <article class="summary-card overdue-summary">
-                <span class="summary-icon" aria-hidden="true">⚠️</span>
+                <span
+                    class="summary-icon"
+                    aria-hidden="true"
+                >
+                    ⚠️
+                </span>
+
                 <h3>Overdue</h3>
+
                 <p id="overdue-count">0</p>
             </article>
+        </section>
+
+        <section class="content-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Progress Overview</p>
+                    <h2>Assignments by Status</h2>
+                </div>
+
+                <a
+                    class="text-link"
+                    href="assignments.html"
+                >
+                    Manage assignments
+                </a>
+            </div>
+
+            <div class="chart-layout">
+                <div class="chart-container">
+                    <canvas
+                        id="assignment-status-chart"
+                        aria-label="Doughnut chart showing assignments by status"
+                        role="img"
+                    ></canvas>
+                </div>
+
+                <div
+                    id="chart-summary"
+                    class="chart-summary"
+                    aria-live="polite"
+                ></div>
+            </div>
         </section>
 
         <section class="content-section">
@@ -76,7 +152,10 @@
                     <h2>Upcoming Assignments</h2>
                 </div>
 
-                <a class="text-link" href="assignments.html">
+                <a
+                    class="text-link"
+                    href="assignments.html"
+                >
                     View all assignments
                 </a>
             </div>
@@ -84,6 +163,10 @@
             <div id="upcoming-assignments"></div>
         </section>
     </main>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"
+    ></script>
 
     <script src="js/theme.js"></script>
     <script src="js/dashboard.js"></script>
