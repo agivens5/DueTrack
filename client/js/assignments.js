@@ -1,3 +1,5 @@
+'use strict';
+
 const assignmentForm = document.getElementById(
     'assignment-form'
 );
@@ -72,7 +74,7 @@ let assignmentCalendar = null;
 
 async function loadCourses() {
     try {
-        const response = await fetch('/api/courses');
+        const response = await authenticatedFetch('/api/courses');
 
         if (!response.ok) {
             throw new Error(
@@ -107,7 +109,7 @@ async function loadCourses() {
 
 async function loadAssignments() {
     try {
-        const response = await fetch(
+        const response = await authenticatedFetch(
             '/api/assignments'
         );
 
@@ -808,7 +810,7 @@ assignmentForm.addEventListener(
             : 'POST';
 
         try {
-            const response = await fetch(
+            const response = await authenticatedFetch(
                 url,
                 {
                     method,
@@ -942,7 +944,7 @@ async function markComplete(assignmentId) {
     }
 
     try {
-        const response = await fetch(
+        const response = await authenticatedFetch(
             `/api/assignments/${assignmentId}`,
             {
                 method: 'PUT',
@@ -1000,7 +1002,7 @@ async function deleteAssignment(assignmentId) {
     }
 
     try {
-        const response = await fetch(
+        const response = await authenticatedFetch(
             `/api/assignments/${assignmentId}`,
             {
                 method: 'DELETE'
@@ -1200,18 +1202,133 @@ window.addEventListener(
     }
 );
 
-const savedAssignmentView =
-    localStorage.getItem(
-        'duetrack-assignment-view'
-    );
-
-switchAssignmentView(
-    savedAssignmentView === 'calendar'
-        ? 'calendar'
-        : 'list'
+document.addEventListener(
+    'DOMContentLoaded',
+    initializeAssignmentsPage
 );
 
-Promise.all([
-    loadCourses(),
-    loadAssignments()
-]);
+async function initializeAssignmentsPage() {
+    try {
+        const currentUser =
+            await Auth.requireAuthentication();
+
+        if (!currentUser) {
+            return;
+        }
+
+        displayLoggedInUser(currentUser);
+        setupLogoutButton();
+
+        const savedAssignmentView =
+            localStorage.getItem(
+                'duetrack-assignment-view'
+            );
+
+        switchAssignmentView(
+            savedAssignmentView === 'calendar'
+                ? 'calendar'
+                : 'list'
+        );
+
+        await Promise.all([
+            loadCourses(),
+            loadAssignments()
+        ]);
+    } catch (error) {
+        console.error(
+            'Unable to initialize the assignments page:',
+            error
+        );
+
+        showAssignmentMessage(
+            error.message ||
+            'Unable to load the assignments page.',
+            'error'
+        );
+
+        if (assignmentList) {
+            assignmentList.innerHTML = `
+                <div class="empty-state">
+                    <p class="error">
+                        ${escapeHtml(
+                            error.message ||
+                            'Unable to load assignments.'
+                        )}
+                    </p>
+                </div>
+            `;
+        }
+
+        displayCalendarError(
+            error.message ||
+            'Unable to load the assignment calendar.'
+        );
+    }
+}
+
+function displayLoggedInUser(user) {
+    const loggedInUserElement =
+        document.getElementById(
+            'logged-in-user'
+        );
+
+    if (!loggedInUserElement) {
+        return;
+    }
+
+    const displayName =
+        Auth.getUserDisplayName(user);
+
+    loggedInUserElement.textContent =
+        `Hi, ${displayName}`;
+}
+
+function setupLogoutButton() {
+    const logoutButton =
+        document.getElementById(
+            'logout-button'
+        );
+
+    if (!logoutButton) {
+        return;
+    }
+
+    logoutButton.addEventListener(
+        'click',
+        async () => {
+            logoutButton.disabled = true;
+            logoutButton.textContent =
+                'Logging out...';
+
+            await Auth.handleLogout();
+        }
+    );
+}
+
+async function authenticatedFetch(
+    url,
+    options = {}
+) {
+    const response = await fetch(
+        url,
+        {
+            ...options,
+            credentials: 'include',
+            headers: {
+                ...(options.headers || {})
+            }
+        }
+    );
+
+    if (response.status === 401) {
+        window.location.replace(
+            'login.html'
+        );
+
+        throw new Error(
+            'Your session has expired. Please sign in again.'
+        );
+    }
+
+    return response;
+}

@@ -19,26 +19,44 @@
         <h1>DueTrack</h1>
 
         <nav>
-            <a href="index.html">Dashboard</a>
-            <a href="courses.html">Courses</a>
+    <a href="index.html">Dashboard</a>
 
-            <a
-                href="assignments.html"
-                class="active"
-            >
-                Assignments
-            </a>
+    <a href="courses.html">
+        Courses
+    </a>
 
-            <button
-                id="theme-toggle"
-                class="theme-toggle"
-                type="button"
-                aria-label="Switch to dark mode"
-                title="Switch theme"
-            >
-                🌙 Dark
-            </button>
-        </nav>
+    <a
+        href="assignments.html"
+        class="active"
+    >
+        Assignments
+    </a>
+
+    <span
+        id="logged-in-user"
+        class="logged-in-user"
+    >
+        Loading...
+    </span>
+
+    <button
+        id="logout-button"
+        class="logout-button"
+        type="button"
+    >
+        Logout
+    </button>
+
+    <button
+        id="theme-toggle"
+        class="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        title="Switch theme"
+    >
+        🌙 Dark
+    </button>
+</nav>
     </header>
 
     <main>
@@ -359,6 +377,7 @@
     ></script>
 
     <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/assignments.js"></script>
 </body>
 </html>

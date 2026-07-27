@@ -865,3 +865,26 @@ button:disabled {
         height: 260px;
     }
 }
+
+.logged-in-user {
+    margin-left: auto;
+    margin-right: .75rem;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.logout-button {
+    margin-right: .75rem;
+    padding: .55rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: #d32f2f;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.logout-button:hover {
+    background: #b71c1c;
+}

@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>DueTrack Courses</title>
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -12,29 +18,59 @@
         <h1>DueTrack</h1>
 
         <nav>
-    <a href="index.html">Dashboard</a>
-    <a href="courses.html" class="active">Courses</a>
-    <a href="assignments.html">Assignments</a>
+            <a href="index.html">Dashboard</a>
 
-    <button
-        id="theme-toggle"
-        class="theme-toggle"
-        type="button"
-        aria-label="Switch to dark mode"
-        title="Switch theme"
-    >
-        🌙 Dark
-    </button>
-</nav>
+            <a
+                href="courses.html"
+                class="active"
+            >
+                Courses
+            </a>
+
+            <a href="assignments.html">
+                Assignments
+            </a>
+
+            <span
+                id="logged-in-user"
+                class="logged-in-user"
+            >
+                Loading...
+            </span>
+
+            <button
+                id="logout-button"
+                class="logout-button"
+                type="button"
+            >
+                Logout
+            </button>
+
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch to dark mode"
+                title="Switch theme"
+            >
+                🌙 Dark
+            </button>
+        </nav>
     </header>
 
     <main>
         <section class="content-section">
-            <p class="eyebrow">Course Management</p>
+            <p class="eyebrow">
+                Course Management
+            </p>
+
             <h2>Add Course</h2>
 
             <form id="course-form">
-                <label for="course-name">Course name</label>
+                <label for="course-name">
+                    Course name
+                </label>
+
                 <input
                     id="course-name"
                     name="course_name"
@@ -42,30 +78,45 @@
                     required
                 >
 
-                <label for="instructor">Instructor</label>
+                <label for="instructor">
+                    Instructor
+                </label>
+
                 <input
                     id="instructor"
                     name="instructor"
                     placeholder="Example: Randy Valis"
                 >
 
-                <label for="semester">Semester</label>
+                <label for="semester">
+                    Semester
+                </label>
+
                 <input
                     id="semester"
                     name="semester"
                     placeholder="Example: Summer 2026"
                 >
 
-                <button type="submit">Add Course</button>
+                <button type="submit">
+                    Add Course
+                </button>
             </form>
 
-            <p id="course-message" class="form-message"></p>
+            <p
+                id="course-message"
+                class="form-message"
+                aria-live="polite"
+            ></p>
         </section>
 
         <section class="content-section">
             <div class="section-heading">
                 <div>
-                    <p class="eyebrow">Saved Courses</p>
+                    <p class="eyebrow">
+                        Saved Courses
+                    </p>
+
                     <h2>Your Courses</h2>
                 </div>
             </div>
@@ -75,6 +126,7 @@
     </main>
 
     <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/courses.js"></script>
 </body>
 </html>

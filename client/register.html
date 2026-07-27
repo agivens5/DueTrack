@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Create a DueTrack account to organize your courses and assignments."
+    >
+
+    <title>Create Account | DueTrack</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
+</head>
+
+<body class="auth-page">
+    <main class="auth-layout">
+        <section class="auth-brand-panel">
+            <div class="auth-brand-content">
+                <a
+                    class="auth-logo"
+                    href="register.html"
+                    aria-label="DueTrack registration"
+                >
+                    <span
+                        class="auth-logo-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+
+                    <span>DueTrack</span>
+                </a>
+
+                <div class="auth-brand-copy">
+                    <p class="auth-eyebrow">
+                        Build better study habits
+                    </p>
+
+                    <h1>
+                        Plan clearly.
+                        <br>
+                        Finish confidently.
+                    </h1>
+
+                    <p class="auth-brand-description">
+                        Create your free account and keep every course,
+                        assignment, deadline, and priority organized.
+                    </p>
+                </div>
+
+                <div class="auth-feature-list">
+                    <article class="auth-feature-item">
+                        <span
+                            class="auth-feature-icon"
+                            aria-hidden="true"
+                        >
+                            📝
+                        </span>
+
+                        <div>
+                            <h2>Manage assignments</h2>
+
+                            <p>
+                                Add, edit, complete, filter, and sort
+                                assignments from one place.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="auth-feature-item">
+                        <span
+                            class="auth-feature-icon"
+                            aria-hidden="true"
+                        >
+                            ⏰
+                        </span>
+
+                        <div>
+                            <h2>Catch overdue work</h2>
+
+                            <p>
+                                Quickly identify missed deadlines and
+                                focus on what needs attention first.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="auth-feature-item">
+                        <span
+                            class="auth-feature-icon"
+                            aria-hidden="true"
+                        >
+                            🌙
+                        </span>
+
+                        <div>
+                            <h2>Use your preferred theme</h2>
+
+                            <p>
+                                Switch between light and dark mode and
+                                keep your preference across visits.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="auth-form-panel">
+            <div class="auth-form-wrapper register-form-wrapper">
+                <div class="auth-mobile-brand">
+                    <a
+                        class="auth-logo"
+                        href="register.html"
+                        aria-label="DueTrack registration"
+                    >
+                        <span
+                            class="auth-logo-icon"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </span>
+
+                        <span>DueTrack</span>
+                    </a>
+                </div>
+
+                <div class="auth-heading">
+                    <p class="auth-eyebrow">
+                        Get started
+                    </p>
+
+                    <h2>Create your account</h2>
+
+                    <p>
+                        Enter your information below to create your
+                        personal DueTrack workspace.
+                    </p>
+                </div>
+
+                <form
+                    id="register-form"
+                    class="auth-form"
+                    novalidate
+                >
+                    <div class="auth-name-grid">
+                        <div class="auth-field">
+                            <label for="register-first-name">
+                                First name
+                            </label>
+
+                            <div class="auth-input-wrapper">
+                                <span
+                                    class="auth-input-icon"
+                                    aria-hidden="true"
+                                >
+                                    👤
+                                </span>
+
+                                <input
+                                    id="register-first-name"
+                                    name="first_name"
+                                    type="text"
+                                    autocomplete="given-name"
+                                    placeholder="First name"
+                                    maxlength="50"
+                                    required
+                                >
+                            </div>
+
+                            <p
+                                id="register-first-name-error"
+                                class="auth-field-error"
+                                aria-live="polite"
+                            ></p>
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="register-last-name">
+                                Last name
+                            </label>
+
+                            <div class="auth-input-wrapper">
+                                <span
+                                    class="auth-input-icon"
+                                    aria-hidden="true"
+                                >
+                                    👤
+                                </span>
+
+                                <input
+                                    id="register-last-name"
+                                    name="last_name"
+                                    type="text"
+                                    autocomplete="family-name"
+                                    placeholder="Last name"
+                                    maxlength="50"
+                                    required
+                                >
+                            </div>
+
+                            <p
+                                id="register-last-name-error"
+                                class="auth-field-error"
+                                aria-live="polite"
+                            ></p>
+                        </div>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="register-email">
+                            Email address
+                        </label>
+
+                        <div class="auth-input-wrapper">
+                            <span
+                                class="auth-input-icon"
+                                aria-hidden="true"
+                            >
+                                ✉
+                            </span>
+
+                            <input
+                                id="register-email"
+                                name="email"
+                                type="email"
+                                autocomplete="email"
+                                placeholder="you@example.com"
+                                maxlength="254"
+                                required
+                            >
+                        </div>
+
+                        <p
+                            id="register-email-error"
+                            class="auth-field-error"
+                            aria-live="polite"
+                        ></p>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="register-password">
+                            Password
+                        </label>
+
+                        <div class="auth-input-wrapper">
+                            <span
+                                class="auth-input-icon"
+                                aria-hidden="true"
+                            >
+                                🔒
+                            </span>
+
+                            <input
+                                id="register-password"
+                                name="password"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Create a password"
+                                maxlength="128"
+                                required
+                            >
+
+                            <button
+                                id="toggle-register-password"
+                                class="password-toggle"
+                                type="button"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                            >
+                                Show
+                            </button>
+                        </div>
+
+                        <div
+                            class="password-strength"
+                            aria-live="polite"
+                        >
+                            <div class="password-strength-header">
+                                <span>Password strength</span>
+
+                                <strong id="password-strength-label">
+                                    Not entered
+                                </strong>
+                            </div>
+
+                            <div
+                                class="password-strength-track"
+                                aria-hidden="true"
+                            >
+                                <span
+                                    id="password-strength-bar"
+                                    class="password-strength-bar"
+                                ></span>
+                            </div>
+                        </div>
+
+                        <ul class="password-requirements">
+                            <li id="password-length-requirement">
+                                At least 8 characters
+                            </li>
+
+                            <li id="password-uppercase-requirement">
+                                One uppercase letter
+                            </li>
+
+                            <li id="password-lowercase-requirement">
+                                One lowercase letter
+                            </li>
+
+                            <li id="password-number-requirement">
+                                One number
+                            </li>
+                        </ul>
+
+                        <p
+                            id="register-password-error"
+                            class="auth-field-error"
+                            aria-live="polite"
+                        ></p>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="register-confirm-password">
+                            Confirm password
+                        </label>
+
+                        <div class="auth-input-wrapper">
+                            <span
+                                class="auth-input-icon"
+                                aria-hidden="true"
+                            >
+                                🔒
+                            </span>
+
+                            <input
+                                id="register-confirm-password"
+                                name="confirm_password"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Enter your password again"
+                                maxlength="128"
+                                required
+                            >
+
+                            <button
+                                id="toggle-confirm-password"
+                                class="password-toggle"
+                                type="button"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                            >
+                                Show
+                            </button>
+                        </div>
+
+                        <p
+                            id="register-confirm-password-error"
+                            class="auth-field-error"
+                            aria-live="polite"
+                        ></p>
+                    </div>
+
+                    <label class="terms-option">
+                        <input
+                            id="accept-terms"
+                            name="accept_terms"
+                            type="checkbox"
+                            required
+                        >
+
+                        <span>
+                            I understand that this account stores my
+                            personal course and assignment data.
+                        </span>
+                    </label>
+
+                    <p
+                        id="register-terms-error"
+                        class="auth-field-error"
+                        aria-live="polite"
+                    ></p>
+
+                    <p
+                        id="register-message"
+                        class="auth-message"
+                        role="alert"
+                        aria-live="polite"
+                    ></p>
+
+                    <button
+                        id="register-submit-button"
+                        class="auth-submit-button"
+                        type="submit"
+                    >
+                        <span class="button-label">
+                            Create Account
+                        </span>
+
+                        <span
+                            class="button-spinner hidden"
+                            aria-hidden="true"
+                        ></span>
+                    </button>
+                </form>
+
+                <p class="auth-switch-message">
+                    Already have a DueTrack account?
+
+                    <a href="login.html">
+                        Sign in
+                    </a>
+                </p>
+
+                <p class="auth-security-note">
+                    <span aria-hidden="true">🔐</span>
+
+                    Passwords are securely hashed before they are
+                    stored.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>

@@ -1,24 +1,114 @@
-const API_URL = '/api';
+"use strict";
+
+const API_URL = "/api";
 
 let assignmentStatusChart = null;
 let dashboardAssignments = [];
 
-async function loadDashboard() {
-    const upcomingContainer = document.getElementById(
-        'upcoming-assignments'
-    );
+document.addEventListener("DOMContentLoaded", initializeDashboard);
 
-    const chartSummary = document.getElementById(
-        'chart-summary'
+async function initializeDashboard() {
+    try {
+        const currentUser = await Auth.requireAuthentication();
+
+        if (!currentUser) {
+            return;
+        }
+
+        displayLoggedInUser(currentUser);
+        setupLogoutButton();
+
+        await loadDashboard();
+    } catch (error) {
+        console.error(
+            "Unable to initialize the dashboard:",
+            error
+        );
+
+        displayDashboardError(
+            error.message ||
+            "Unable to load the dashboard."
+        );
+    }
+}
+
+function displayLoggedInUser(user) {
+    const loggedInUserElement =
+        document.getElementById("logged-in-user");
+
+    if (!loggedInUserElement) {
+        return;
+    }
+
+    const displayName =
+        Auth.getUserDisplayName(user);
+
+    loggedInUserElement.textContent =
+        `Hi, ${displayName}`;
+}
+
+function setupLogoutButton() {
+    const logoutButton =
+        document.getElementById("logout-button");
+
+    if (!logoutButton) {
+        return;
+    }
+
+    logoutButton.addEventListener(
+        "click",
+        async () => {
+            logoutButton.disabled = true;
+            logoutButton.textContent = "Logging out...";
+
+            await Auth.handleLogout();
+        }
     );
+}
+
+async function authenticatedFetch(url, options = {}) {
+    const response = await fetch(url, {
+        ...options,
+        credentials: "include",
+        headers: {
+            ...(options.headers || {})
+        }
+    });
+
+    if (response.status === 401) {
+        window.location.replace("login.html");
+
+        throw new Error(
+            "Your session has expired. Please sign in again."
+        );
+    }
+
+    return response;
+}
+
+async function loadDashboard() {
+    const upcomingContainer =
+        document.getElementById(
+            "upcoming-assignments"
+        );
+
+    const chartSummary =
+        document.getElementById(
+            "chart-summary"
+        );
 
     try {
         const [
             coursesResponse,
             assignmentsResponse
         ] = await Promise.all([
-            fetch(`${API_URL}/courses`),
-            fetch(`${API_URL}/assignments`)
+            authenticatedFetch(
+                `${API_URL}/courses`
+            ),
+
+            authenticatedFetch(
+                `${API_URL}/assignments`
+            )
         ]);
 
         if (
@@ -26,59 +116,68 @@ async function loadDashboard() {
             !assignmentsResponse.ok
         ) {
             throw new Error(
-                'Unable to load dashboard data.'
+                "Unable to load dashboard data."
             );
         }
 
-        const courses = await coursesResponse.json();
+        const courses =
+            await coursesResponse.json();
+
         const assignments =
             await assignmentsResponse.json();
 
         dashboardAssignments = assignments;
 
-        const completedAssignments = assignments.filter(
-            assignment =>
-                assignment.status === 'Complete'
-        );
+        const completedAssignments =
+            assignments.filter(
+                assignment =>
+                    assignment.status === "Complete"
+            );
 
-        const incompleteAssignments = assignments.filter(
-            assignment =>
-                assignment.status !== 'Complete'
-        );
+        const incompleteAssignments =
+            assignments.filter(
+                assignment =>
+                    assignment.status !== "Complete"
+            );
 
         const overdueAssignments =
             assignments.filter(isOverdue);
 
         document.getElementById(
-            'course-count'
+            "course-count"
         ).textContent = courses.length;
 
         document.getElementById(
-            'assignment-count'
+            "assignment-count"
         ).textContent = assignments.length;
 
         document.getElementById(
-            'completed-count'
-        ).textContent = completedAssignments.length;
+            "completed-count"
+        ).textContent =
+            completedAssignments.length;
 
         document.getElementById(
-            'incomplete-count'
-        ).textContent = incompleteAssignments.length;
+            "incomplete-count"
+        ).textContent =
+            incompleteAssignments.length;
 
         document.getElementById(
-            'overdue-count'
-        ).textContent = overdueAssignments.length;
+            "overdue-count"
+        ).textContent =
+            overdueAssignments.length;
 
         displayAssignmentChart(assignments);
         displayUpcomingAssignments(assignments);
     } catch (error) {
-        upcomingContainer.innerHTML = `
-            <div class="empty-state">
-                <p class="error">
-                    ${escapeHtml(error.message)}
-                </p>
-            </div>
-        `;
+        if (upcomingContainer) {
+            upcomingContainer.innerHTML = `
+                <div class="empty-state">
+                    <p class="error">
+                        ${escapeHtml(error.message)}
+                    </p>
+                </div>
+            `;
+        }
 
         if (chartSummary) {
             chartSummary.innerHTML = `
@@ -92,20 +191,54 @@ async function loadDashboard() {
     }
 }
 
-function displayAssignmentChart(assignments) {
-    const chartCanvas = document.getElementById(
-        'assignment-status-chart'
-    );
+function displayDashboardError(message) {
+    const upcomingContainer =
+        document.getElementById(
+            "upcoming-assignments"
+        );
 
-    const chartSummary = document.getElementById(
-        'chart-summary'
-    );
+    const chartSummary =
+        document.getElementById(
+            "chart-summary"
+        );
+
+    if (upcomingContainer) {
+        upcomingContainer.innerHTML = `
+            <div class="empty-state">
+                <p class="error">
+                    ${escapeHtml(message)}
+                </p>
+            </div>
+        `;
+    }
+
+    if (chartSummary) {
+        chartSummary.innerHTML = `
+            <div class="empty-state">
+                <p class="error">
+                    ${escapeHtml(message)}
+                </p>
+            </div>
+        `;
+    }
+}
+
+function displayAssignmentChart(assignments) {
+    const chartCanvas =
+        document.getElementById(
+            "assignment-status-chart"
+        );
+
+    const chartSummary =
+        document.getElementById(
+            "chart-summary"
+        );
 
     if (!chartCanvas || !chartSummary) {
         return;
     }
 
-    if (typeof Chart === 'undefined') {
+    if (typeof Chart === "undefined") {
         chartSummary.innerHTML = `
             <div class="empty-state">
                 <span
@@ -126,7 +259,8 @@ function displayAssignmentChart(assignments) {
         return;
     }
 
-    const statusCounts = getStatusCounts(assignments);
+    const statusCounts =
+        getStatusCounts(assignments);
 
     const totalAssignments =
         statusCounts.complete +
@@ -142,31 +276,38 @@ function displayAssignmentChart(assignments) {
         assignmentStatusChart.destroy();
     }
 
-    const styles = getComputedStyle(
-        document.documentElement
-    );
+    const styles =
+        getComputedStyle(
+            document.documentElement
+        );
 
-    const textColor = styles
-        .getPropertyValue('--text')
-        .trim();
+    const textColor =
+        styles
+            .getPropertyValue("--text")
+            .trim();
 
-    const surfaceColor = styles
-        .getPropertyValue('--surface')
-        .trim();
+    const surfaceColor =
+        styles
+            .getPropertyValue("--surface")
+            .trim();
 
-    const borderColor = styles
-        .getPropertyValue('--card-border')
-        .trim();
+    const borderColor =
+        styles
+            .getPropertyValue("--card-border")
+            .trim();
 
-    const hasAssignments = totalAssignments > 0;
+    const hasAssignments =
+        totalAssignments > 0;
 
     const labels = hasAssignments
         ? [
-            'Complete',
-            'In Progress',
-            'Not Started'
+            "Complete",
+            "In Progress",
+            "Not Started"
         ]
-        : ['No Assignments'];
+        : [
+            "No Assignments"
+        ];
 
     const chartData = hasAssignments
         ? [
@@ -174,99 +315,113 @@ function displayAssignmentChart(assignments) {
             statusCounts.inProgress,
             statusCounts.notStarted
         ]
-        : [1];
+        : [
+            1
+        ];
 
     const chartColors = hasAssignments
         ? [
-            '#16803c',
-            '#3559e0',
-            '#98a2b3'
+            "#16803c",
+            "#3559e0",
+            "#98a2b3"
         ]
-        : [borderColor || '#c9ced6'];
+        : [
+            borderColor || "#c9ced6"
+        ];
 
-    assignmentStatusChart = new Chart(
-        chartCanvas,
-        {
-            type: 'doughnut',
+    assignmentStatusChart =
+        new Chart(
+            chartCanvas,
+            {
+                type: "doughnut",
 
-            data: {
-                labels,
+                data: {
+                    labels,
 
-                datasets: [
-                    {
-                        data: chartData,
-                        backgroundColor: chartColors,
-                        borderColor: surfaceColor,
-                        borderWidth: 4,
-                        hoverOffset: 8
-                    }
-                ]
-            },
-
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '67%',
-
-                animation: {
-                    duration: 700
+                    datasets: [
+                        {
+                            data: chartData,
+                            backgroundColor:
+                                chartColors,
+                            borderColor:
+                                surfaceColor,
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }
+                    ]
                 },
 
-                plugins: {
-                    legend: {
-                        position: 'bottom',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: "67%",
 
-                        labels: {
-                            color: textColor,
-                            padding: 18,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                size: 13,
-                                weight: 'bold'
-                            }
-                        }
+                    animation: {
+                        duration: 700
                     },
 
-                    tooltip: {
-                        enabled: hasAssignments,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
 
-                        callbacks: {
-                            label(context) {
-                                const value = context.raw;
+                            labels: {
+                                color: textColor,
+                                padding: 18,
+                                usePointStyle: true,
+                                pointStyle: "circle",
 
-                                const percentage =
-                                    totalAssignments === 0
-                                        ? 0
-                                        : Math.round(
-                                            (
-                                                value /
-                                                totalAssignments
-                                            ) * 100
-                                        );
+                                font: {
+                                    size: 13,
+                                    weight: "bold"
+                                }
+                            }
+                        },
 
-                                return (
-                                    `${context.label}: ` +
-                                    `${value} (${percentage}%)`
-                                );
+                        tooltip: {
+                            enabled:
+                                hasAssignments,
+
+                            callbacks: {
+                                label(context) {
+                                    const value =
+                                        context.raw;
+
+                                    const percentage =
+                                        totalAssignments === 0
+                                            ? 0
+                                            : Math.round(
+                                                (
+                                                    value /
+                                                    totalAssignments
+                                                ) * 100
+                                            );
+
+                                    return (
+                                        `${context.label}: ` +
+                                        `${value} ` +
+                                        `(${percentage}%)`
+                                    );
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-    );
+        );
 }
 
 function getStatusCounts(assignments) {
     return assignments.reduce(
         (counts, assignment) => {
             const status =
-                assignment.status || 'Not Started';
+                assignment.status ||
+                "Not Started";
 
-            if (status === 'Complete') {
+            if (status === "Complete") {
                 counts.complete += 1;
-            } else if (status === 'In Progress') {
+            } else if (
+                status === "In Progress"
+            ) {
                 counts.inProgress += 1;
             } else {
                 counts.notStarted += 1;
@@ -286,9 +441,10 @@ function displayChartSummary(
     statusCounts,
     totalAssignments
 ) {
-    const chartSummary = document.getElementById(
-        'chart-summary'
-    );
+    const chartSummary =
+        document.getElementById(
+            "chart-summary"
+        );
 
     if (!chartSummary) {
         return;
@@ -307,8 +463,8 @@ function displayChartSummary(
                 <h3>No assignment data yet</h3>
 
                 <p>
-                    Add an assignment to see your progress
-                    chart.
+                    Add an assignment to see your
+                    progress chart.
                 </p>
             </div>
         `;
@@ -316,12 +472,13 @@ function displayChartSummary(
         return;
     }
 
-    const completionPercentage = Math.round(
-        (
-            statusCounts.complete /
-            totalAssignments
-        ) * 100
-    );
+    const completionPercentage =
+        Math.round(
+            (
+                statusCounts.complete /
+                totalAssignments
+            ) * 100
+        );
 
     chartSummary.innerHTML = `
         <div class="progress-highlight">
@@ -336,7 +493,9 @@ function displayChartSummary(
             <p class="progress-description">
                 ${statusCounts.complete} of
                 ${totalAssignments}
-                ${getAssignmentWord(totalAssignments)}
+                ${getAssignmentWord(
+                    totalAssignments
+                )}
                 completed
             </p>
         </div>
@@ -344,7 +503,10 @@ function displayChartSummary(
         <div class="chart-stat-list">
             <div class="chart-stat-item">
                 <span
-                    class="chart-stat-dot complete-dot"
+                    class="
+                        chart-stat-dot
+                        complete-dot
+                    "
                     aria-hidden="true"
                 ></span>
 
@@ -357,7 +519,10 @@ function displayChartSummary(
 
             <div class="chart-stat-item">
                 <span
-                    class="chart-stat-dot progress-dot"
+                    class="
+                        chart-stat-dot
+                        progress-dot
+                    "
                     aria-hidden="true"
                 ></span>
 
@@ -370,7 +535,10 @@ function displayChartSummary(
 
             <div class="chart-stat-item">
                 <span
-                    class="chart-stat-dot not-started-dot"
+                    class="
+                        chart-stat-dot
+                        not-started-dot
+                    "
                     aria-hidden="true"
                 ></span>
 
@@ -386,48 +554,65 @@ function displayChartSummary(
 
 function getAssignmentWord(totalAssignments) {
     return totalAssignments === 1
-        ? 'assignment'
-        : 'assignments';
+        ? "assignment"
+        : "assignments";
 }
 
 function displayUpcomingAssignments(assignments) {
-    const container = document.getElementById(
-        'upcoming-assignments'
-    );
+    const container =
+        document.getElementById(
+            "upcoming-assignments"
+        );
+
+    if (!container) {
+        return;
+    }
 
     const today = startOfToday();
-    const sevenDaysFromToday = new Date(today);
+
+    const sevenDaysFromToday =
+        new Date(today);
 
     sevenDaysFromToday.setDate(
         today.getDate() + 7
     );
 
-    const upcomingAssignments = assignments
-        .filter(assignment => {
-            if (
-                assignment.status === 'Complete' ||
-                !assignment.due_date
-            ) {
-                return false;
-            }
+    const upcomingAssignments =
+        assignments
+            .filter(assignment => {
+                if (
+                    assignment.status ===
+                        "Complete" ||
+                    !assignment.due_date
+                ) {
+                    return false;
+                }
 
-            const dueDate = parseDate(
-                assignment.due_date
-            );
+                const dueDate =
+                    parseDate(
+                        assignment.due_date
+                    );
 
-            return (
-                dueDate >= today &&
-                dueDate <= sevenDaysFromToday
-            );
-        })
-        .sort(
-            (first, second) =>
-                parseDate(first.due_date) -
-                parseDate(second.due_date)
-        )
-        .slice(0, 5);
+                return (
+                    dueDate >= today &&
+                    dueDate <=
+                        sevenDaysFromToday
+                );
+            })
+            .sort(
+                (first, second) =>
+                    parseDate(
+                        first.due_date
+                    ) -
+                    parseDate(
+                        second.due_date
+                    )
+            )
+            .slice(0, 5);
 
-    if (upcomingAssignments.length === 0) {
+    if (
+        upcomingAssignments.length === 0
+    ) {
         container.innerHTML = `
             <div class="empty-state">
                 <span
@@ -437,12 +622,14 @@ function displayUpcomingAssignments(assignments) {
                     🎉
                 </span>
 
-                <h3>No assignments due soon</h3>
+                <h3>
+                    No assignments due soon
+                </h3>
 
                 <p>
                     You do not have any incomplete
-                    assignments due within the next seven
-                    days.
+                    assignments due within the next
+                    seven days.
                 </p>
             </div>
         `;
@@ -450,74 +637,79 @@ function displayUpcomingAssignments(assignments) {
         return;
     }
 
-    container.innerHTML = upcomingAssignments
-        .map(assignment => {
-            const daysUntilDue = getDaysUntilDue(
-                assignment.due_date
-            );
+    container.innerHTML =
+        upcomingAssignments
+            .map(assignment => {
+                const daysUntilDue =
+                    getDaysUntilDue(
+                        assignment.due_date
+                    );
 
-            return `
-                <article
-                    class="list-card upcoming-card"
-                >
-                    <div class="card-title-row">
-                        <div>
-                            <p class="due-label">
-                                ${getDueLabel(
-                                    daysUntilDue
+                return `
+                    <article
+                        class="
+                            list-card
+                            upcoming-card
+                        "
+                    >
+                        <div class="card-title-row">
+                            <div>
+                                <p class="due-label">
+                                    ${getDueLabel(
+                                        daysUntilDue
+                                    )}
+                                </p>
+
+                                <h3>
+                                    ${escapeHtml(
+                                        assignment.title
+                                    )}
+                                </h3>
+                            </div>
+
+                            <span class="
+                                priority-badge
+                                priority-${getClassName(
+                                    assignment.priority ||
+                                    "Medium"
                                 )}
-                            </p>
-
-                            <h3>
+                            ">
                                 ${escapeHtml(
-                                    assignment.title
+                                    assignment.priority ||
+                                    "Medium"
                                 )}
-                            </h3>
+                            </span>
                         </div>
 
+                        <p class="assignment-date">
+                            <strong>Due:</strong>
+
+                            ${formatDate(
+                                assignment.due_date
+                            )}
+                        </p>
+
                         <span class="
-                            priority-badge
-                            priority-${getClassName(
-                                assignment.priority ||
-                                'Medium'
+                            status-badge
+                            status-${getClassName(
+                                assignment.status ||
+                                "Not Started"
                             )}
                         ">
                             ${escapeHtml(
-                                assignment.priority ||
-                                'Medium'
+                                assignment.status ||
+                                "Not Started"
                             )}
                         </span>
-                    </div>
-
-                    <p class="assignment-date">
-                        <strong>Due:</strong>
-
-                        ${formatDate(
-                            assignment.due_date
-                        )}
-                    </p>
-
-                    <span class="
-                        status-badge
-                        status-${getClassName(
-                            assignment.status ||
-                            'Not Started'
-                        )}
-                    ">
-                        ${escapeHtml(
-                            assignment.status ||
-                            'Not Started'
-                        )}
-                    </span>
-                </article>
-            `;
-        })
-        .join('');
+                    </article>
+                `;
+            })
+            .join("");
 }
 
 function isOverdue(assignment) {
     if (
-        assignment.status === 'Complete' ||
+        assignment.status === "Complete" ||
         !assignment.due_date
     ) {
         return false;
@@ -543,11 +735,11 @@ function getDaysUntilDue(dateValue) {
 
 function getDueLabel(daysUntilDue) {
     if (daysUntilDue === 0) {
-        return 'Due today';
+        return "Due today";
     }
 
     if (daysUntilDue === 1) {
-        return 'Due tomorrow';
+        return "Due tomorrow";
     }
 
     return `Due in ${daysUntilDue} days`;
@@ -569,17 +761,17 @@ function startOfToday() {
 
 function formatDate(dateValue) {
     if (!dateValue) {
-        return 'No due date';
+        return "No due date";
     }
 
     return parseDate(
         dateValue
     ).toLocaleDateString(
-        'en-US',
+        "en-US",
         {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
+            month: "long",
+            day: "numeric",
+            year: "numeric"
         }
     );
 }
@@ -588,33 +780,33 @@ function getClassName(value) {
     return String(value)
         .trim()
         .toLowerCase()
-        .replace(/\s+/g, '-');
+        .replace(/\s+/g, "-");
 }
 
 function escapeHtml(value) {
     const element =
-        document.createElement('div');
+        document.createElement("div");
 
-    element.textContent = value ?? '';
+    element.textContent = value ?? "";
 
     return element.innerHTML;
 }
 
 window.addEventListener(
-    'duetrack-theme-change',
+    "duetrack-theme-change",
     () => {
-        if (dashboardAssignments.length > 0) {
+        if (
+            dashboardAssignments.length > 0
+        ) {
             displayAssignmentChart(
                 dashboardAssignments
             );
         } else if (
             document.getElementById(
-                'assignment-status-chart'
+                "assignment-status-chart"
             )
         ) {
             displayAssignmentChart([]);
         }
     }
 );
-
-loadDashboard();
