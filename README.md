@@ -17,7 +17,7 @@ Over the course of this independent study, the project evolved from an initial c
 - 🔎 Assignment search, filtering, and sorting
 - 🌙 Light and dark mode
 - 🧪 Automated API testing using Jest and Supertest
-- 💾 SQLite database with RESTful REST API
+- 💾 SQLite database with a RESTful REST API
 
 ---
 
@@ -289,7 +289,7 @@ The following screenshots demonstrate the primary features of DueTrack.
 
 ## Registration Page
 
-![Registration Page](docs/screenshots/register.png)
+![Registration Page](docs/screenshots/registration.png)
 
 ---
 
