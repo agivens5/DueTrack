@@ -1,3 +1,5 @@
 node_modules/
 database/duetrack.db
 duetrack-cookies.txt
+.DS_Store
+**/.DS_Store
