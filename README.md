@@ -1,79 +1,159 @@
 # DueTrack
 
-## Overview
+**DueTrack** is a full-stack web application developed as part of **COSC 495 – Independent Study** at **Towson University**.
 
-DueTrack is a student assignment tracking system developed as part of my COSC 495 Independent Study at Towson University.
+The application helps students organize coursework by managing courses, assignments, priorities, due dates, and completion status through a secure web-based interface.
 
-The purpose of the application is to help students organize coursework by managing courses, assignments, deadlines, priorities, and completion status in one centralized application.
-
----
-
-## Features
-
-- Create, edit, and delete courses
-- Create, edit, and delete assignments
-- Track assignment due dates
-- Set assignment priority levels
-- Update assignment completion status
-- RESTful API backend
-- SQLite database storage
-- Automated API testing
+Over the course of this independent study, the project evolved from an initial concept into a complete assignment management system featuring authentication, database integration, RESTful APIs, automated testing, dashboard analytics, and an interactive calendar interface.
 
 ---
 
-## Technologies Used
+# Features
 
-### Frontend
+## User Authentication
+- Secure user registration
+- Secure user login
+- Password hashing using bcrypt
+- Session-based authentication
+- Logout functionality
+- Protected application pages
+- User-specific data access
+
+## Dashboard
+- Assignment statistics
+- Course statistics
+- Completed assignment count
+- Incomplete assignment count
+- Overdue assignment count
+- Upcoming assignment list
+- Assignment status chart
+- Dark mode support
+
+## Course Management
+- Create courses
+- Edit courses
+- Delete courses
+- Store instructor information
+- Store semester information
+
+## Assignment Management
+- Create assignments
+- Edit assignments
+- Delete assignments
+- Mark assignments complete
+- Assignment priorities
+- Assignment status tracking
+- Due date tracking
+- Search assignments
+- Filter assignments
+- Sort assignments
+
+## Calendar
+- Monthly assignment calendar
+- Event selection
+- Calendar/List view switching
+
+## User Experience
+- Responsive interface
+- Dark mode
+- Confirmation dialogs
+- Success and error messages
+- Automatic page updates
+- Session expiration handling
+
+---
+
+# Technology Stack
+
+## Frontend
 - HTML5
 - CSS3
-- JavaScript
+- JavaScript (ES6)
 
-### Backend
-- Node.js (24 LTS)
+## Backend
+- Node.js
 - Express.js
 
-### Database
+## Database
 - SQLite
 
-### Testing
+## Authentication
+- bcrypt
+- express-session
+
+## Testing
 - Jest
 - Supertest
 
+## Version Control
+- Git
+- GitHub
+
+  ---
+
+# Installation
+
+## Prerequisites
+
+Before running DueTrack, install the following software:
+
+- Node.js (v24 LTS or newer)
+- npm
+- Git
+
 ---
 
-## Installation
-
-Clone the repository:
+## Clone the Repository
 
 ```bash
 git clone https://github.com/agivens5/DueTrack.git
 ```
 
-Move into the project:
+Move into the project folder:
 
 ```bash
-cd DueTrack/server
+cd DueTrack
 ```
 
-Install dependencies:
+---
+
+## Install Dependencies
+
+Navigate to the server directory:
+
+```bash
+cd server
+```
+
+Install the required packages:
 
 ```bash
 npm install
 ```
 
-Start the application:
+---
+
+## Start the Application
+
+Start the Express server:
 
 ```bash
 node server.js
 ```
 
-Open your browser:
+The application will be available at:
 
 ```
 http://localhost:3000
 ```
 
-Run automated tests:
+---
+
+## Running Automated Tests
+
+DueTrack includes automated API testing using Jest and Supertest.
+
+Run the test suite:
 
 ```bash
 npm test
@@ -81,65 +161,283 @@ npm test
 
 ---
 
-## Project Structure
+# Authentication
+
+DueTrack uses secure session-based authentication to protect user accounts and application data.
+
+### Authentication Features
+
+- User registration
+- User login
+- User logout
+- Password hashing using bcrypt
+- Express session management
+- Protected API endpoints
+- Protected frontend pages
+- User-specific database records
+- Automatic session expiration handling
+
+Only authenticated users can access the Dashboard, Courses, and Assignments pages.
+
+---
+
+# REST API
+
+## Authentication
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Log in |
+| POST | `/api/auth/logout` | Log out |
+| GET | `/api/auth/me` | Get current user |
+
+---
+
+## Courses
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/api/courses` | Retrieve all courses |
+| GET | `/api/courses/:id` | Retrieve a single course |
+| POST | `/api/courses` | Create a course |
+| PUT | `/api/courses/:id` | Update a course |
+| DELETE | `/api/courses/:id` | Delete a course |
+
+---
+
+## Assignments
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/api/assignments` | Retrieve all assignments |
+| GET | `/api/assignments/:id` | Retrieve a single assignment |
+| POST | `/api/assignments` | Create an assignment |
+| PUT | `/api/assignments/:id` | Update an assignment |
+| DELETE | `/api/assignments/:id` | Delete an assignment |
+
+---
+
+# Project Structure
 
 ```text
 DueTrack
 │
 ├── client
 │   ├── css
+│   │   ├── auth.css
+│   │   └── styles.css
+│   │
 │   ├── js
-│   ├── index.html
+│   │   ├── assignments.js
+│   │   ├── auth.js
+│   │   ├── courses.js
+│   │   ├── dashboard.js
+│   │   ├── login.js
+│   │   ├── register.js
+│   │   └── theme.js
+│   │
+│   ├── assignments.html
 │   ├── courses.html
-│   └── assignments.html
+│   ├── index.html
+│   ├── login.html
+│   └── register.html
 │
 ├── database
+│   ├── duetrack.db
+│   └── duetrack.test.db
 │
 ├── docs
 │
 └── server
     ├── controllers
+    ├── middleware
+    │   └── requireAuth.js
     ├── models
     ├── routes
+    │   ├── assignmentRoutes.js
+    │   ├── authRoutes.js
+    │   └── courseRoutes.js
     ├── tests
     ├── package.json
     └── server.js
 ```
+---
+
+# Screenshots
+
+The following screenshots demonstrate the primary features of DueTrack.
+
+> **Note:** Replace the placeholders below with screenshots from your application before submitting the project.
+
+## Login Page
+
+![Login Page](docs/screenshots/login.png)
 
 ---
 
-## Development Timeline
+## Registration Page
 
-- ✅ Week 1 – Research and project planning
-- ✅ Week 2 – Database and architecture design
-- ✅ Week 3 – Backend setup
-- ✅ Week 4 – Database integration
-- ✅ Week 5 – CRUD API implementation
-- ✅ Week 6 – Automated API testing
-- 🚧 Week 7 – Frontend development and API integration
-- ⏳ Week 8 – Feature enhancements and debugging
-- ⏳ Week 9 – Final testing and refinement
-- ⏳ Week 10 – Documentation and presentation
+![Registration Page](docs/screenshots/register.png)
 
 ---
 
-## Future Improvements
+## Dashboard
 
-- User authentication
-- Assignment search
-- Assignment filtering
-- Dashboard analytics
-- Responsive mobile interface
-- Assignment notifications
+Displays assignment statistics, upcoming assignments, and an assignment status chart.
+
+![Dashboard](docs/screenshots/dashboard.png)
 
 ---
 
-## Author
+## Courses
 
-Armani Givens
+Manage courses by creating, editing, and deleting course information.
+
+![Courses](docs/screenshots/courses.png)
+
+---
+
+## Assignments
+
+Create, update, delete, search, filter, and sort assignments.
+
+![Assignments](docs/screenshots/assignments.png)
+
+---
+
+## Calendar View
+
+View assignments on an interactive monthly calendar.
+
+![Calendar](docs/screenshots/calendar.png)
+
+---
+
+## Dark Mode
+
+Switch between light and dark themes.
+
+![Dark Mode](docs/screenshots/darkmode.png)
+
+---
+
+# Testing
+
+DueTrack was tested throughout development using both automated and manual testing.
+
+## Automated Testing
+
+The backend API was tested using:
+
+- Jest
+- Supertest
+
+Automated tests verify:
+
+- Course CRUD operations
+- Assignment CRUD operations
+- Request validation
+- Error handling
+- HTTP status codes
+
+Run the automated tests:
+
+```bash
+npm test
+```
+
+---
+
+## Manual Testing
+
+The following functionality was verified manually:
+
+- User registration
+- User login
+- User logout
+- Protected routes
+- Course CRUD operations
+- Assignment CRUD operations
+- Search functionality
+- Filtering
+- Sorting
+- Calendar view
+- Dashboard statistics
+- Dark mode
+- Responsive layout
+
+---
+
+# Development Timeline
+
+| Week | Milestone |
+|-------|-----------|
+| 1 | Research and project planning |
+| 2 | Database and software architecture design |
+| 3 | Backend setup using Express and SQLite |
+| 4 | Database integration and API development |
+| 5 | Complete CRUD API implementation |
+| 6 | Automated API testing using Jest and Supertest |
+| 7 | Frontend development and backend integration |
+| 8 | User interface improvements and additional features |
+| 9 | Authentication, user management, and application security |
+| 10 | Documentation, testing, and final project polish |
+
+---
+
+# Challenges & Lessons Learned
+
+This independent study provided practical experience designing, developing, testing, and documenting a complete full-stack web application.
+
+Throughout the project I strengthened my understanding of:
+
+- RESTful API development
+- Express.js application architecture
+- SQLite database design
+- Session-based authentication
+- Password hashing using bcrypt
+- Frontend and backend integration
+- Automated API testing with Jest and Supertest
+- Git and GitHub version control
+- Debugging complex application issues
+- Software documentation and project organization
+
+Developing DueTrack also reinforced the importance of incremental development, testing throughout the software lifecycle, and maintaining clear project documentation.
+
+---
+
+# Future Improvements
+
+Possible future enhancements include:
+
+- Email assignment reminders
+- Password reset functionality
+- User profile management
+- Course color customization
+- Assignment attachments
+- Assignment categories and tags
+- Dashboard data export
+- Mobile application
+- Cloud database deployment
+- Multi-user collaboration
+
+---
+
+# Author
+
+**Armani Givens**
 
 B.S. Computer Science
 
 Towson University
 
-COSC 495 Independent Study
+COSC 495 – Independent Study
+
+GitHub: https://github.com/agivens5/DueTrack
+
+---
+
+## Acknowledgements
+
+This project was developed as part of **COSC 495 – Independent Study** at **Towson University** under the supervision of the course instructor.
