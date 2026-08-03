@@ -1,43 +1,119 @@
 # System Architecture
 
-## Overview
+# Overview
 
-DueTrack uses a three-tier architecture.
+DueTrack follows a three-tier architecture using a web-based frontend, a RESTful backend API, and a SQLite database.
 
 ```text
-User
- |
- v
-Frontend
-(HTML/CSS/JavaScript)
- |
- v
-Express API
-(Node.js)
- |
- v
-SQLite Database
+                User
+                  │
+                  ▼
+      Frontend (HTML/CSS/JavaScript)
+                  │
+                  ▼
+        Authentication Layer
+     (Login / Sessions / Middleware)
+                  │
+                  ▼
+      Express REST API (Node.js)
+                  │
+                  ▼
+          SQLite Database
 ```
 
-## Frontend
+---
 
-The frontend provides the user interface and allows users to interact with courses and assignments.
+# Frontend
 
-## Backend
+The frontend was developed using HTML5, CSS3, and JavaScript.
 
-The backend processes requests and communicates with the database using REST API routes.
+It provides users with pages for:
 
-## Database
+- User Registration
+- User Login
+- Dashboard
+- Course Management
+- Assignment Management
+- Calendar View
 
-SQLite stores course and assignment data.
+The frontend communicates with the backend using the Fetch API.
 
-## MVC Architecture
+---
 
-Model:
-Handles data and database interactions.
+# Backend
 
-View:
-Displays pages and information to users.
+The backend was developed using Node.js and Express.js.
 
-Controller:
-Processes requests and coordinates communication between the model and view.
+It is responsible for:
+
+- Processing HTTP requests
+- Managing authentication
+- Handling CRUD operations
+- Validating user input
+- Returning JSON responses
+- Communicating with the SQLite database
+
+---
+
+# Authentication
+
+Authentication is implemented using:
+
+- bcrypt password hashing
+- express-session
+- Session cookies
+- Authentication middleware
+
+Protected API routes require users to be logged in before accessing application data.
+
+---
+
+# Database
+
+SQLite stores all application data including:
+
+- Users
+- Courses
+- Assignments
+
+Relationships are enforced using foreign keys.
+
+---
+
+# MVC Architecture
+
+## Model
+
+Responsible for interacting with the SQLite database.
+
+Examples:
+
+- Database connection
+- Database initialization
+- SQL queries
+
+---
+
+## View
+
+Responsible for displaying information to users.
+
+Examples:
+
+- Dashboard
+- Login page
+- Registration page
+- Courses page
+- Assignments page
+
+---
+
+## Controller
+
+Responsible for processing requests, validating data, and coordinating communication between the View and Model.
+
+Examples:
+
+- Authentication routes
+- Course routes
+- Assignment routes
