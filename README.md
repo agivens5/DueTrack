@@ -8,6 +8,19 @@ Over the course of this independent study, the project evolved from an initial c
 
 ---
 
+## Highlights
+
+- 🔐 Secure user authentication with bcrypt and Express sessions
+- 📚 Course and assignment management
+- 📅 Interactive assignment calendar
+- 📊 Dashboard analytics with charts
+- 🔎 Assignment search, filtering, and sorting
+- 🌙 Light and dark mode
+- 🧪 Automated API testing using Jest and Supertest
+- 💾 SQLite database with RESTful REST API
+
+---
+
 # Features
 
 ## User Authentication
@@ -248,7 +261,7 @@ DueTrack
 │   └── duetrack.test.db
 │
 ├── docs
-│
+│   └── screenshots
 └── server
     ├── controllers
     ├── middleware
@@ -267,8 +280,6 @@ DueTrack
 # Screenshots
 
 The following screenshots demonstrate the primary features of DueTrack.
-
-> **Note:** Replace the placeholders below with screenshots from your application before submitting the project.
 
 ## Login Page
 
@@ -405,6 +416,8 @@ Throughout the project I strengthened my understanding of:
 
 Developing DueTrack also reinforced the importance of incremental development, testing throughout the software lifecycle, and maintaining clear project documentation.
 
+Completing this project strengthened my confidence in designing, developing, testing, debugging, and documenting a full-stack web application from initial planning through final implementation.
+
 ---
 
 # Future Improvements
@@ -417,10 +430,9 @@ Possible future enhancements include:
 - Course color customization
 - Assignment attachments
 - Assignment categories and tags
-- Dashboard data export
+- Export assignments to CSV or PDF
 - Mobile application
 - Cloud database deployment
-- Multi-user collaboration
 
 ---
 
@@ -440,4 +452,4 @@ GitHub: https://github.com/agivens5/DueTrack
 
 ## Acknowledgements
 
-This project was developed as part of **COSC 495 – Independent Study** at **Towson University** under the supervision of the course instructor.
+This project was developed as the final project for **COSC 495 – Independent Study** at **Towson University** under the supervision of the course instructor.
